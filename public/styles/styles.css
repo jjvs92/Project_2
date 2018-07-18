@@ -1,3 +1,52 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  background-color: #f9f9f9;
+}
+
+
+/* Login Form */
+.form-header {
+  margin: 15px;
+  padding: 20px
+}
+
+.auth-form {
+  position: relative;
+  top: 50%;
+  transform: translateY(50%);
+  background-color: #ffffff;
+  margin: auto;
+  width: 400px;
+  border: 1px solid #d1d5da;
+  padding: 10px;
+  text-align: center;
+}
+
+.inputs {
+  width: 80%;
+  line-height: 20px;
+  border: 1px solid #d1d5da;
+  border-radius: 3px;
+  padding: 6px 8px;
+  margin-bottom: 15px
+}
+
+.newUser {
+  margin-top: 20px;
+}
+
+.loginBtn {
+  margin-top: 20px;
+  color: #ffffff;
+  background-color: #28a745
+}
+
 .list-group-item {
   line-height: 2.5;
 }
