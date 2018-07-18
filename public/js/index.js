@@ -1,9 +1,3 @@
-// Get references to page elements
-var $exampleText = $("#example-text");
-var $exampleDescription = $("#example-description");
-var $submitBtn = $("#submit");
-var $exampleList = $("#example-list");
-
 // The API object contains methods for each kind of request we'll make
 var API = {
   saveExample: function(example) {
@@ -94,6 +88,15 @@ var handleDeleteBtnClick = function() {
   });
 };
 
-// Add event listeners to the submit and delete buttons
-$submitBtn.on("click", handleFormSubmit);
-$exampleList.on("click", ".delete", handleDeleteBtnClick);
+//Login click handler
+$("#loginUser").on("click", function(e) {
+  e.preventDefault();
+  var userName = $("#userName").val().trim();
+  var userPassword = $("#password").val().trim();
+  var user = {
+    userName: userName,
+    userPassword: userPassword
+  };
+  console.log("Username: " + user.userName);
+  console.log("Password: " + user.userPassword);
+});
