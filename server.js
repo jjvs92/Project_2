@@ -3,12 +3,18 @@ require("dotenv").config();
 var express = require("express");
 var bodyParser = require("body-parser");
 var exphbs = require("express-handlebars");
+var passport = require("passport");
+var session = require("express-session");
 
 var db = require("./models");
 
 var app = express();
 var PORT = process.env.PORT || 3000;
 
+// Passport config
+app.use(session({ secret: 'keyboard cat', resave: true, saveUninitialized: true}));
+app.use(passport.initialize());
+app.use(passport.session());
 // Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
