@@ -1,6 +1,7 @@
 <div class="row loginPrompt">
   <div class="auth-form" id="login">
-    <form id="loginForm">
+
+    <form action="/" method= "POST" id="loginForm">
       <div class="form-header">
         <h3>Sign in to App</h1>
       </div>
@@ -8,12 +9,12 @@
         {{!-- Username input --}}
         <label for="uname">Username</label>
         <br>
-        <input class="inputs" type="text" id="userName">
+        <input class="inputs" name = "userName" type="text" id="userName">
         <br>
         {{!-- Password input --}}
         <label for="pwd">Password</label>
         <br>
-        <input class="inputs" type="password" id="password" required>
+        <input class="inputs" name = "password" type="password" id="password" required>
         <br>
         {{!-- Submit button --}}
         <input class="inputs loginBtn" type="submit" id="loginUser" value="Login" required>
