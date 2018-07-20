@@ -1,4 +1,5 @@
 var db = require("../models");
+var passport = require("../config/passport/passport.js");
 
 module.exports = function(app) {
   // Get all examples
@@ -21,4 +22,9 @@ module.exports = function(app) {
       res.json(dbExample);
     });
   });
+
+  app.post("/api/userinfo", passport.authenticate("local"), function(req, res){
+      // update url to lobby
+      res.json("/members");
+  })
 };
