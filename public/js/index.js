@@ -115,7 +115,7 @@ var handleDeleteBtnClick = function() {
 
 
 //Login click handler
-$("#loginUser").on("click", function(e) {
+$("form").on("submit", function(e) {
   e.preventDefault();
   var userName = $("#userName").val().trim();
   var userPassword = $("#password").val().trim();
@@ -127,7 +127,7 @@ $("#loginUser").on("click", function(e) {
   console.log("Password: " + user.userPassword);
   
 
-  $.post("/api/userinfo",{
+  $.post("/api/userinfo", {
       username: userName,
       password: userPassword
   }).then(function(data){
@@ -137,5 +137,6 @@ $("#loginUser").on("click", function(e) {
   }) 
 
 
-  });
+  
   showAction();
+});  
