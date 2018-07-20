@@ -5,6 +5,7 @@ var bodyParser = require("body-parser");
 var exphbs = require("express-handlebars");
 var passport = require("passport");
 var session = require("express-session");
+var env = require("dotenv").load();
 
 var db = require("./models");
 
@@ -33,6 +34,9 @@ app.set("view engine", "handlebars");
 // Routes
 require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
+
+// load passport strategies
+require("./config/passport/passport.js")(passport, db.user);
 
 var syncOptions = { force: false };
 

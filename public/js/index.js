@@ -127,23 +127,15 @@ $("#loginUser").on("click", function(e) {
   console.log("Password: " + user.userPassword);
   
 
-  $.get("/api/userinfo", function(data){
+  $.post("/api/userinfo",{
+      username: userName,
+      password: userPassword
+  }).then(function(data){
+    window.location.replace(data);
+  }).catch(function(err){
+    console.log(err);
+  }) 
 
-    console.log(data);
-    for(var i =0; i < data.length; i++){
-      console.log(data[i].userName);
-      if(userName === data[i].userName){
-        if(userPassword === data[i].password){
-          console.log("You signed in");
 
-        } else{
-          alert("Incorrect password");
-        }
-      }
-    else {
-        alert("This user does not exist");
-      }
-    }
   });
   showAction();
-});
