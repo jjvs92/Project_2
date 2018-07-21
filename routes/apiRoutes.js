@@ -3,7 +3,7 @@ var passport = require("passport");
 
 module.exports = function(app) {
   // Get all examples
-  app.get("/api/userinfo", function(req, res) {
+  app.get("/api/userInfo", function(req, res) {
     db.User.findAll({}).then(function(response) {
       res.json(response);
     });
@@ -12,6 +12,13 @@ module.exports = function(app) {
   // Create a new example
   app.post("/api/userInfo", function(req, res) {
     db.User.create(req.body).then(function(response) {
+      res.json(response);
+    });
+  });
+
+  app.post("/api/games", function(req, res) {
+    console.log(req.body);
+    db.Game.create(req.body).then(function(response) {
       res.json(response);
     });
   });
