@@ -30,7 +30,6 @@ app.get('/', function(req, res){
 res.send('Welcome to Passport with Sequelize');
 });
 
-
 //Models
 var models = require("./models");
 
@@ -57,3 +56,4 @@ app.listen(PORT, function() {
   console.log("Listening on PORT: " + PORT)
 
 });
+
