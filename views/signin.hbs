@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+  <div class="row loginPrompt">
+  <div class="auth-form" id="login">
+
+    <form action="signin" method="post" name="signin" id="signin">
+      <div class="form-header">
+        <h3>Sign in to App</h1>
+      </div>
+      <div class="form-body">
+        {{!-- Username input --}}
+        <label for="email">Email</label>
+        <br>
+        <input class="inputs" name ="email" type="text" id="email">
+        <br>
+        {{!-- Password input --}}
+        <label for="password">Password</label>
+        <br>
+        <input class="inputs" name="password" type="password" id="password" required>
+        <br>
+        {{!-- Submit button --}}
+        <input class="inputs loginBtn" type="submit" id="loginUser" value="Sign In" required>
+      </div>
+    </form>
+    <p class="newUser">
+      New to App?
+      <a href="/signup">Create an account</a>
+      .
+    </p>
+  </div>
+</div>
+</div>
+</body>
+</html>
