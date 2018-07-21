@@ -1,5 +1,5 @@
 var runAPI = function() {
-    console.log("hello")
-}
+  console.log("hello");
+};
 
-module.exports = runAPI
+module.exports = runAPI;
