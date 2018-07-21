@@ -1,36 +1,39 @@
-var findResults = function() {
-  setTimeout(
-    function() {
-      var winners = [];
-      var losers = [];
-      $.ajax({
-        url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/boxscore.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
-        type: "GET",
-        success: function(res) {
-          for (var j = 0; j < res.league.games.length; j++) {
-            var thisGame = res.league.games[j];
-            var homeTeam = thisGame.game.home.name;
-            var awayTeam = thisGame.game.away.name;
-            var homeScore = thisGame.game.home.runs;
-            var awayScore = thisGame.game.away.runs;
-            console.log("Home score: " + homeScore);
-            console.log("Away score: " + awayScore);
-            if (homeScore > awayScore) {
-              winners.push(homeTeam);
-              losers.push(awayTeam);
-            } else {
-              winners.push(awayTeam);
-              losers.push(homeTeam);
-            }
-            console.log("Winners:");
-            console.log(winners);
-            console.log("Losers:");
-            console.log(losers);
+var now = require("./time.js");
 
-          };
+var findResults = function() {
+  setTimeout(function() {
+    var winners = [];
+    var losers = [];
+    $.ajax({
+      url:
+        "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" +
+        now +
+        "/boxscore.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+      type: "GET",
+      success: function(res) {
+        for (var j = 0; j < res.league.games.length; j++) {
+          var thisGame = res.league.games[j];
+          var homeTeam = thisGame.game.home.name;
+          var awayTeam = thisGame.game.away.name;
+          var homeScore = thisGame.game.home.runs;
+          var awayScore = thisGame.game.away.runs;
+          console.log("Home score: " + homeScore);
+          console.log("Away score: " + awayScore);
+          if (homeScore > awayScore) {
+            winners.push(homeTeam);
+            losers.push(awayTeam);
+          } else {
+            winners.push(awayTeam);
+            losers.push(homeTeam);
+          }
         }
-      });
-    }, 1500);
+        console.log("Winners:");
+        console.log(winners);
+        console.log("Losers:");
+        console.log(losers);
+      }
+    });
+  }, 1500);
 };
 
 // var postGames = function(gameData) {
@@ -42,10 +45,11 @@ var showAction = function() {
   var homeTeams = [];
   var awayTeams = [];
   var createDiv = $("<div class='card text-center'></div>");
-  
+
   $(".loginPrompt").empty();
   $.ajax({
-    url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+    url:
+      "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
     type: "GET",
     success: function(data) {
       // console.log(data.games.length);
@@ -61,14 +65,14 @@ var showAction = function() {
         // createDiv.append("<p>HOME TEAM:</p>" + "<button class=allTeams>" + homeTeam + "</button>" + "<p> vs </p>" + "<p>AWAY TEAM:</p>" + "<button class=allTeams>" + awayTeam + "</button>" + "<hr>");
         createDiv.append(
           "<div class='card-header'>Game: " +
-          gameNum +
-          "</div><div class='card-body'><div class='row'><div class='col-6'><button type='button' class='btn btn-success'>" +
-          homeTeam +
-          "</button></div><div class='col-6'><button type='button' class='btn btn-success'>" +
-          awayTeam +
-          "</button></div></div></div><div class='card-footer text-muted'>Status: " +
-          gameStatus +
-          "</div><br>"
+            gameNum +
+            "</div><div class='card-body'><div class='row'><div class='col-6'><button type='button' class='btn btn-success'>" +
+            homeTeam +
+            "</button></div><div class='col-6'><button type='button' class='btn btn-success'>" +
+            awayTeam +
+            "</button></div></div></div><div class='card-footer text-muted'>Status: " +
+            gameStatus +
+            "</div><br>"
         );
 
         $(".games").append(createDiv);
@@ -172,8 +176,12 @@ var handleDeleteBtnClick = function() {
 //Login click handler
 $("form").on("submit", function(e) {
   e.preventDefault();
-  var userName = $("#userName").val().trim();
-  var userPassword = $("#password").val().trim();
+  var userName = $("#userName")
+    .val()
+    .trim();
+  var userPassword = $("#password")
+    .val()
+    .trim();
   var user = {
     userName: userName,
     userPassword: userPassword
@@ -214,7 +222,5 @@ $("form").on("submit", function(e) {
   //   console.log(err);
   // });
 
-
-  
   // showAction();
-});  
+});
