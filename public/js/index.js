@@ -61,6 +61,21 @@ var showAction = function() {
 
         homeTeams.push(homeTeam);
         awayTeams.push(awayTeam);
+<<<<<<< HEAD
+        var createDiv = $("<div style='text-align: center;'></div>");
+        createDiv.append(
+          "<h1>Game " +
+            gameNum +
+            "</h1><br>" +
+            "<p>HOME TEAM: " +
+            homeTeam +
+            "</p>" +
+            "<p> vs </p>" +
+            "<p>AWAY TEAM: " +
+            awayTeam +
+            "</p><hr>"
+        );
+=======
         // var createDiv = $("<div style='text-align: center;'><h1>Game " + gameNum + "</h1><br></div>");
         // createDiv.append("<p>HOME TEAM:</p>" + "<button class=allTeams>" + homeTeam + "</button>" + "<p> vs </p>" + "<p>AWAY TEAM:</p>" + "<button class=allTeams>" + awayTeam + "</button>" + "<hr>");
         createDiv.append(
@@ -75,6 +90,7 @@ var showAction = function() {
             "</div><br>"
         );
 
+>>>>>>> 510aef3f625c84c6cb42ffe2a7925d096c1358cd
         $(".games").append(createDiv);
       }
     }
@@ -82,6 +98,8 @@ var showAction = function() {
   // postGames();
 };
 
+<<<<<<< HEAD
+=======
 // The API object contains methods for each kind of request we'll make
 
 var API = {
@@ -173,6 +191,7 @@ var handleDeleteBtnClick = function() {
   });
 };
 
+>>>>>>> 510aef3f625c84c6cb42ffe2a7925d096c1358cd
 //Login click handler
 $("form").on("submit", function(e) {
   e.preventDefault();
@@ -212,6 +231,21 @@ $("form").on("submit", function(e) {
 
   console.log("Username: " + user.userName);
   console.log("Password: " + user.userPassword);
+<<<<<<< HEAD
+  $.post("/api/userinfo", {
+    username: userName,
+    password: userPassword
+  })
+    .then(function(data) {
+      window.location.replace(data);
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
+
+  showAction();
+});
+=======
 
   // $.post("/api/userinfo", {
   //   username: userName,
@@ -223,4 +257,9 @@ $("form").on("submit", function(e) {
   // });
 
   // showAction();
+<<<<<<< HEAD
 });
+=======
+});  
+>>>>>>> 510aef3f625c84c6cb42ffe2a7925d096c1358cd
+>>>>>>> master
