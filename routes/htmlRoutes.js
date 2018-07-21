@@ -1,14 +1,16 @@
 var db = require("../models");
 
+var isAuthenticated = require("../config/middleware/isAuthenticated.js");
+
 module.exports = function(app) {
   // Load index page
   app.get("/", function(req, res) {
-    db.User.findAll({}).then(function(dbExamples) {
-      res.render("index", {
-        // msg: "Welcome!",
-        examples: dbExamples
-      });
-    });
+
+      if (req.user){
+        // possible change the thread url
+        res.redirect("/members");
+      }
+      res.render("index");
   });
 
   app.get("/signUp", function(req, res){
