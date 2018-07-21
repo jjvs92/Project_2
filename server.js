@@ -53,4 +53,8 @@ db.sequelize.sync(syncOptions).then(function() {
   });
 });
 
+// var routes = require('./controllers/games_controller.js');
+
+// app.use(routes);
+
 module.exports = app;
