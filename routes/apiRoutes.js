@@ -38,15 +38,20 @@ module.exports = function(app) {
 
   // Delete an example by id
   app.delete("/api/examples/:id", function(req, res) {
-    db.Example.destroy({ where: { id: req.params.id } }).then(function(dbExample) {
+    db.Example.destroy({ where: { id: req.params.id } }).then(function(
+      dbExample
+    ) {
       res.json(dbExample);
     });
   });
 
-  app.post("/", passport.authenticate("local-signin", {
-    successRedirect: "/members",
-    failureRedirect: "/"
-  }));
+  app.post(
+    "/",
+    passport.authenticate("local-signin", {
+      successRedirect: "/members",
+      failureRedirect: "/"
+    })
+  );
 
   app.get("/members", function(req, res){
     res.render("members");
