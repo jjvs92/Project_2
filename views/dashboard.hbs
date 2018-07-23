@@ -12,42 +12,7 @@
 <script>
   var now = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
   var findResults = function() {
-    setTimeout(
-      function() {
-        var winners = [];
-        var losers = [];
-        $.ajax({
-          url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + now + "/boxscore.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
-          type: "GET",
-          success: function(res) {
-            for (var j = 0; j < res.league.games.length; j++) {
-              var thisGame = res.league.games[j];
-              var homeTeam = thisGame.game.home.name;
-              var awayTeam = thisGame.game.away.name;
-              var homeScore = thisGame.game.home.runs;
-              var awayScore = thisGame.game.away.runs;
 
-              var winner;
-              var findWinner = function() {
-                if (homeScore > awayScore) {
-                  winner = homeTeam
-                } else {
-                  winner = awayTeam
-                };
-              };
-              findWinner();
-              
-  // THis here is console logging  the ID of the user that is signed in... when wanting to reference the user we can use {{userid}}--- this is becuase it was passed in authcontroller.js
-  function showUserID(){
-    console.log({{userid}});
-    console.log({{userWallet}})
-  }
-  showUserID();
-
-  //-------------------------------------------------
-
-
-var findResults = function() {
   setTimeout(
     function() {
       var winners = [];
@@ -69,6 +34,8 @@ var findResults = function() {
                 winner = homeTeam
               } else {
                 winner = awayTeam
+              };
+            };
 
 
               function updateGames(games) {
@@ -79,7 +46,7 @@ var findResults = function() {
                 }).then(getGames);
               };
 
-              updateWinner();
+              
 
               var newResult = {
                 game_result: winner
@@ -107,6 +74,16 @@ var findResults = function() {
       }, 1500);
       
   };
+;
+
+  // THis here is console logging  the ID of the user that is signed in... when wanting to reference the user we can use {{userid}}--- this is becuase it was passed in authcontroller.js
+  function showUserID(){
+    console.log({{userid}});
+    console.log({{userWallet}})
+  }
+  showUserID();
+            
+  //-------------------------------------------------
 
 var postGames = function(gameData) {
   $.post("/api/games", gameData)
