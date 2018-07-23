@@ -1,4 +1,6 @@
 var authController = require('../controllers/authcontroller.js');
+var db = require("../models");
+
 
 module.exports = function(app, passport){
 
@@ -23,6 +25,27 @@ app.post('/signin', passport.authenticate('local-signin',  { successRedirect: '/
                                                     ));
 
 
+
+app.post("/api/games", function(req, res) {
+console.log(req.body);
+db.Game.create(req.body).then(function(response) {
+    res.json(response);
+});
+});
+
+app.put("/api/games", function(req, res) {
+console.log(req.body);
+db.Game.update({
+    game_result: req.body.game_result
+}, {
+    where: {
+    id: req.body.id
+    }
+}).then(function(response) {
+    res.json(response);
+});
+});
+                                            
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
