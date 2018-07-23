@@ -1,84 +1,85 @@
 var now = require("./time.js");
 
 var findResults = function() {
-  setTimeout(
-    function() {
-      var winners = [];
-      var losers = [];
-      $.ajax({
-        url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/boxscore.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
-        type: "GET",
-        success: function(res) {
-          for (var j = 0; j < res.league.games.length; j++) {
-            var thisGame = res.league.games[j];
-            var homeTeam = thisGame.game.home.name;
-            var awayTeam = thisGame.game.away.name;
-            var homeScore = thisGame.game.home.runs;
-            var awayScore = thisGame.game.away.runs;
+  setTimeout(function() {
+    var winners = [];
+    var losers = [];
+    $.ajax({
+      url:
+        "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/boxscore.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+      type: "GET",
+      success: function(res) {
+        for (var j = 0; j < res.league.games.length; j++) {
+          var thisGame = res.league.games[j];
+          var homeTeam = thisGame.game.home.name;
+          var awayTeam = thisGame.game.away.name;
+          var homeScore = thisGame.game.home.runs;
+          var awayScore = thisGame.game.away.runs;
 
-            var winner;
-            var findWinner = function() {
-              if (homeScore > awayScore) {
-                winner = homeTeam
-              } else {
-                winner = awayTeam
-              };
-            };
-            findWinner();
-
-            function updateWinner() {
-              // event.preventDefault();
-              var updatedWinner = winner;
-              updateGames(updatedWinner)
-            };
-
-            function updateGames(games) {
-              $.ajax({
-                method: "PUT",
-                url: "/api/games",
-                data: games
-              }).then(getGames);
-            };
-
-            updateWinner();
-
-            // var newResult = {
-            //   game_result: winner
-            // };
-
-            // $.put("/api/games", newResult).then(function() {
-            //   console.log("New game added");
-            //   console.log(newResult);
-            // });
-
-            // console.log("Home score: " + homeScore);
-            // console.log("Away score: " + awayScore);
+          var winner;
+          var findWinner = function() {
             if (homeScore > awayScore) {
-              winners.push(homeTeam);
-              losers.push(awayTeam);
+              winner = homeTeam;
             } else {
-              winners.push(awayTeam);
-              losers.push(homeTeam);
+              winner = awayTeam;
             }
           };
-          console.log("Winners:");
-          console.log(winners);
-          console.log("Losers:");
-          console.log(losers);
-        }
-      });
-    }, 1500);
-    
+          findWinner();
+
+          function updateWinner() {
+            // event.preventDefault();
+            var updatedWinner = winner;
+            updateGames(updatedWinner);
+          }
+
+          function updateGames(games) {
+            $.ajax({
+              method: "PUT",
+              url: "/api/games",
+              data: games
+            }).then(getGames);
+          }
+
+          updateWinner();
+
+          // var newResult = {
+          //   game_result: winner
+          // };
+
+          // $.put("/api/games", newResult).then(function() {
+          //   console.log("New game added");
+          //   console.log(newResult);
+          // });
+
+          // console.log("Home score: " + homeScore);
+          // console.log("Away score: " + awayScore);
+          if (homeScore > awayScore) {
+            winners.push(homeTeam);
+            losers.push(awayTeam);
+          } else {
+            winners.push(awayTeam);
+            losers.push(homeTeam);
+          }
+        };
+        console.log("Winners:");
+        console.log(winners);
+        console.log("Losers:");
+        console.log(losers);
+      }
+    });
+  }, 1500);
 };
 
 var postGames = function(gameData) {
-  $.post("/api/games", gameData)
-  .then(getGames);
+  $.post("/api/games", gameData).then(getGames);
 };
 
 var getGames = function() {
   $.ajax({
-    url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+    url:
+      "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" +
+      now +
+      "/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
     type: "GET",
     success: function(data) {
       // console.log(data.games.length);
@@ -124,6 +125,7 @@ var showAction = function() {
     type: "GET",
     success: function(data) {
       // console.log(data.games.length);
+      console.log(data.games);
       for (var i = 0; i < data.games.length; i++) {
         var gameNum = [i + 1];
         var awayTeam = data.games[i].away.name;
@@ -136,7 +138,7 @@ var showAction = function() {
           game_status: gameStatus
         };
 
-        $.post('/api/games', newGame).then(function() {
+        $.post("/api/games", newGame).then(function() {
           console.log("New game added");
           console.log(newGame);
         });
@@ -162,97 +164,6 @@ var showAction = function() {
     }
   });
   postGames();
-};
-
-// The API object contains methods for each kind of request we'll make
-
-var API = {
-  saveExample: function(example) {
-    return $.ajax({
-      headers: {
-        "Content-Type": "application/json"
-      },
-      type: "POST",
-      url: "api/examples",
-      data: JSON.stringify(example)
-    });
-  },
-  getExamples: function() {
-    return $.ajax({
-      url: "api/examples",
-      type: "GET"
-    });
-  },
-  deleteExample: function(id) {
-    return $.ajax({
-      url: "api/examples/" + id,
-      type: "DELETE"
-    });
-  }
-};
-
-// refreshExamples gets new examples from the db and repopulates the list
-var refreshExamples = function() {
-  API.getExamples().then(function(data) {
-    var $examples = data.map(function(example) {
-      var $a = $("<a>")
-        .text(example.text)
-        .attr("href", "/example/" + example.id);
-
-      var $li = $("<li>")
-        .attr({
-          class: "list-group-item",
-          "data-id": example.id
-        })
-        .append($a);
-
-      var $button = $("<button>")
-        .addClass("btn btn-danger float-right delete")
-        .text("ｘ");
-
-      $li.append($button);
-
-      return $li;
-    });
-
-    $exampleList.empty();
-    $exampleList.append($examples);
-  });
-};
-
-// handleFormSubmit is called whenever we submit a new example
-// Save the new example to the db and refresh the list
-var handleFormSubmit = function(event) {
-  event.preventDefault();
-
-  var example = {
-    text: $exampleText.val().trim(),
-    description: $exampleDescription.val().trim()
-  };
-
-  if (!(example.text && example.description)) {
-    alert("You must enter an example text and description!");
-    return;
-  }
-
-  API.saveExample(example).then(function() {
-    refreshExamples();
-  });
-
-  $exampleText.val("");
-  $exampleDescription.val("");
-};
-
-// handleDeleteBtnClick is called when an example's delete button is clicked
-// Remove the example from the db and refresh the list
-var handleDeleteBtnClick = function() {
-  var idToDelete = $(this)
-    .parent()
-    .attr("data-id");
-
-  API.deleteExample(idToDelete).then(function() {
-    refreshExamples();
-  });
 };
 
 //Login click handler
@@ -308,14 +219,14 @@ $("form").on("submit", function(e) {
   showAction();
 });
 
-  // $.post("/api/userinfo", {
-  //   username: userName,
-  //   password: userPassword
-  // }).then(function(data){
-  //   window.location.replace(data);
-  // }).catch(function(err){
-  //   console.log(err);
-  // });
+// $.post("/api/userinfo", {
+//   username: userName,
+//   password: userPassword
+// }).then(function(data){
+//   window.location.replace(data);
+// }).catch(function(err){
+//   console.log(err);
+// });
 
-  // showAction();
+// showAction();
 // });

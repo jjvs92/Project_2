@@ -17,7 +17,7 @@ module.exports = function(app) {
   });
 
   app.post("/api/games", function(req, res) {
-    console.log(req.body);
+    console.log("THESE ARE THE GAMES TODAY: " + req.body);
     db.Game.create(req.body).then(function(response) {
       res.json(response);
     });
@@ -25,13 +25,16 @@ module.exports = function(app) {
 
   app.put("/api/games", function(req, res) {
     console.log(req.body);
-    db.Game.update({
-      game_result: req.body.game_result
-    }, {
-      where: {
-        id: req.body.id
+    db.Game.update(
+      {
+        game_result: req.body.game_result
+      },
+      {
+        where: {
+          id: req.body.id
+        }
       }
-    }).then(function(response) {
+    ).then(function(response) {
       res.json(response);
     });
   });
@@ -53,7 +56,7 @@ module.exports = function(app) {
     })
   );
 
-  app.get("/members", function(req, res){
+  app.get("/members", function(req, res) {
     res.render("members");
   });
 
