@@ -9,6 +9,17 @@
   <div class="col-12 games"></div>
 </div>
 <script>
+
+
+  // THis here is console logging  the ID of the user that is signed in... when wanting to reference the user we can use {{userid}}--- this is becuase it was passed in authcontroller.js
+  function showUserID(){
+    console.log({{userid}});
+  }
+  showUserID();
+
+  //-------------------------------------------------
+
+
 	var showAction = function() {
   var homeTeams = [];
   var awayTeams = [];
@@ -17,6 +28,7 @@
     url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
     type: "GET",
     success: function(data) {
+      console.log(data);
       console.log(data.games.length);
       for (var i = 0; i < data.games.length; i++) {
         var gameNum = [i + 1];
