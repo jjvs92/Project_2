@@ -3,13 +3,40 @@
 <head>
 	<title>Passport with Sequelize</title>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.js"></script>
 </head>
 <body>
 <div class="row">
   <div class="col-12 games"></div>
 </div>
 <script>
+  var now = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
+  var findResults = function() {
+    setTimeout(
+      function() {
+        var winners = [];
+        var losers = [];
+        $.ajax({
+          url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + now + "/boxscore.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+          type: "GET",
+          success: function(res) {
+            for (var j = 0; j < res.league.games.length; j++) {
+              var thisGame = res.league.games[j];
+              var homeTeam = thisGame.game.home.name;
+              var awayTeam = thisGame.game.away.name;
+              var homeScore = thisGame.game.home.runs;
+              var awayScore = thisGame.game.away.runs;
 
+              var winner;
+              var findWinner = function() {
+                if (homeScore > awayScore) {
+                  winner = homeTeam
+                } else {
+                  winner = awayTeam
+                };
+              };
+              findWinner();
+              
   // THis here is console logging  the ID of the user that is signed in... when wanting to reference the user we can use {{userid}}--- this is becuase it was passed in authcontroller.js
   function showUserID(){
     console.log({{userid}});
@@ -42,52 +69,44 @@ var findResults = function() {
                 winner = homeTeam
               } else {
                 winner = awayTeam
+
+
+              function updateGames(games) {
+                $.ajax({
+                  method: "PUT",
+                  url: "/api/games",
+                  data: games
+                }).then(getGames);
               };
+
+              updateWinner();
+
+              var newResult = {
+                game_result: winner
+              };
+
+              $.put("/api/games", newResult).then(function() {
+                console.log("New game added");
+                console.log(newResult);
+              });
+
+              if (homeScore > awayScore) {
+                winners.push(homeTeam);
+                losers.push(awayTeam);
+              } else {
+                winners.push(awayTeam);
+                losers.push(homeTeam);
+              }
             };
-            findWinner();
-
-            function updateWinner() {
-              // event.preventDefault();
-              var updatedWinner = winner;
-              updateGames(updatedWinner)
-            };
-
-            function updateGames(games) {
-              $.ajax({
-                method: "PUT",
-                url: "/api/games",
-                data: games
-              }).then(getGames);
-            };
-
-            updateWinner();
-
-            var newResult = {
-              game_result: winner
-            };
-
-            $.put("/api/games", newResult).then(function() {
-              console.log("New game added");
-              console.log(newResult);
-            });
-
-            if (homeScore > awayScore) {
-              winners.push(homeTeam);
-              losers.push(awayTeam);
-            } else {
-              winners.push(awayTeam);
-              losers.push(homeTeam);
-            }
-          };
-          console.log("Winners:");
-          console.log(winners);
-          console.log("Losers:");
-          console.log(losers);
-        }
-      });
-    }, 1500);
-    
-};
+            console.log("Winners:");
+            console.log(winners);
+            console.log("Losers:");
+            console.log(losers);
+          }
+        });
+      }, 1500);
+      
+  };
 
 var postGames = function(gameData) {
   $.post("/api/games", gameData)
@@ -122,8 +141,7 @@ var showAction = function() {
 
   $(".loginPrompt").empty();
   $.ajax({
-    url:
-      "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+    url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + now + "/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
     type: "GET",
     success: function(data) {
       console.log(data);
