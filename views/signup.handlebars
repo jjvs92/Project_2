@@ -1,0 +1,41 @@
+{{!-- <form id="signup" name="signup" method="post" action="/signup">
+  <label for="email">Email Address</label>
+  <input class="text" name="email" type="email" />
+  <label for="firstname">Firstname</label>
+  <input name="firstname" type="text" />
+  <label for="lastname">Lastname</label>
+  <input name="lastname" type="text" />
+  <label for="password">Password</label>
+  <input name="password" type="password" />
+  <input class="btn" type="submit" value="Sign Up" /> --}}
+
+  <div class="container">
+    <div class="left">
+        <h1 class="signUpHeader">Sign up today!</h1>
+    </div>
+    <form class="align-items-center signUp" id="signup" name="signup" method="post" action="/signup">
+        <label class="labels" for="inputFirstName">First Name</label>
+        <br>
+        <input class="inputs" type="text" id="inputFirstName" name="firstname" placeholder="First Name">
+        <br>
+        <label class="labels" for="inputLastName">Last Name</label>
+        <br>
+        <input class="inputs" type="text" id="inputLastName" name="lastname" placeholder="Last Name">
+        <br>
+        <label class="labels" for="inputUsername">Username</label>
+        <br>
+        <input class="inputs" type="text" id="inputUsername" name="username" placeholder="Username">
+        <br>
+        <label class="labels" for="inputEmail">Email</label>
+        <br>
+        <input class="inputs" type="email" id="inputEmail" name="email" placeholder="Email">
+        <br>
+        <label class="labels" for="password">Password</label>
+        <br>
+        <input class="inputs" type="password" id="password" name="password" placeholder="Password">
+        <br>
+        <input class="inputs btn" type="submit" id="createUser" class="btn btn-primary" value="Create Account">
+    </form>
+</div>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

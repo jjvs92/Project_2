@@ -5,6 +5,7 @@ var session    = require('express-session')
 var bodyParser = require('body-parser')
 var env        = require('dotenv').load()
 var exphbs     = require('express-handlebars')
+var path       = require('path');
 
 
 var PORT = 3000 || process.env.PORT;
@@ -19,11 +20,15 @@ app.use(session({ secret: 'keyboard cat',resave: true, saveUninitialized:true}))
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
+// app.use(express.static(__dirname, '/public'))
+app.use(express.static(path.join(__dirname, './public')))
 
  //For Handlebars
-app.set('views', './views')
-app.engine('hbs', exphbs({extname: '.hbs'}));
-app.set('view engine', '.hbs');
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+// app.set('views', './views')
+// app.engine('hbs', exphbs({extname: '.hbs'}));
+// app.set('view engine', '.hbs');
 
 
 app.get('/', function(req, res){
