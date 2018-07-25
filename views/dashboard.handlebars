@@ -133,11 +133,13 @@ var showAction = function() {
         var homeTeam = data.games[i].home.name;
         var gameStatus = data.games[i].status;
         var gameDate = data.date
+        var gameID = data.games[i].id
 
         var newGame = {
           home_team: homeCity + " " + homeTeam,
           away_team: awayCity + " " + awayTeam,
-          game_status: gameStatus
+          game_status: gameStatus,
+          game_id: gameID
         };
 
         $.post('/api/games', newGame).then(function() {
