@@ -46,7 +46,7 @@ app.get("/api/bets", function(req, res){
 //------------------------------------
 
 app.post("/api/games", function(req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     db.Game.create(req.body).then(function(response) {
       res.json(response);
     });
@@ -55,6 +55,8 @@ app.post("/api/games", function(req, res) {
 app.put("/api/games/:id", function(req, res) {
     console.log(req.body);
     var realID = req.params.id;
+    console.log("Real ID: ");
+    console.log(realID);
     db.Game.update(
       {
         game_result: req.body.game_result
