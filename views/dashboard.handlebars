@@ -32,13 +32,13 @@
               };
             };
 
-              {{!-- function updateGames(games) {
+               /*function updateGames(games) {
                 $.ajax({
                   method: "PUT",
                   url: "/api/games",
                   data: games
                 }).then(getGames);
-              }; --}}
+              }; 
 
               var newResult = {
                 game_result: winner
@@ -47,7 +47,7 @@
               $.put("/api/games", newResult).then(function() {
                 console.log("New game added");
                 console.log(newResult);
-              });
+              });*/
 
               if (homeScore > awayScore) {
                 winners.push(homeTeam);
@@ -66,8 +66,6 @@
       }, 1500);
       
 };
-
-
   // THis here is console logging  the ID of the user that is signed in... when wanting to reference the user we can use {{userid}}--- this is becuase it was passed in authcontroller.js
   function showUserID(){
     console.log({{userid}});
@@ -96,8 +94,6 @@ var postGames = function(gameData) {
 
           homeTeams.push(homeTeam);
           awayTeams.push(awayTeam);
-          // var createDiv = $("<div style='text-align: center;'><h1>Game " + gameNum + "</h1><br></div>");
-          // createDiv.append("<p>HOME TEAM:</p>" + "<button class=allTeams>" + homeTeam + "</button>" + "<p> vs </p>" + "<p>AWAY TEAM:</p>" + "<button class=allTeams>" + awayTeam + "</button>" + "<hr>")
         }
       }
     });
@@ -141,8 +137,6 @@ var showAction = function() {
         homeTeams.push(homeTeam);
         awayTeams.push(awayTeam);
 
-        // var createDiv = $("<div style='text-align: center;'><h1>Game " + gameNum + "</h1><br></div>");
-        // createDiv.append("<p>HOME TEAM:</p>" + "<button class=allTeams>" + homeTeam + "</button>" + "<p> vs </p>" + "<p>AWAY TEAM:</p>" + "<button class=allTeams>" + awayTeam + "</button>" + "<hr>");
         createDiv.append(
           `<div class='card-header'>Game:  
             ${gameNum} </div><div class='card-body'><div class='row'><div class='col-6'><button type='button' data-teamName = ${homeCity + " " + homeTeam} class='btn btn-success bet-button'> 
@@ -161,28 +155,16 @@ var showAction = function() {
   postGames();
 };
 
-
   showAction();
   findResults();
 
-  // $.post("/api/userinfo", {
-  //   username: userName,
-  //   password: userPassword
-  // }).then(function(data){
-  //   window.location.replace(data);
-  // }).catch(function(err){
-  //   console.log(err);
-  // });
-
-  // showAction();
-// });
 $(document).ready(function() {
   console.log("ready");
 
   $(".bet-button").click(function(){
     console.log("cool");
-    console.log($(this).data);
-  })
-})
+    
+  });
+});
 
 </script>
