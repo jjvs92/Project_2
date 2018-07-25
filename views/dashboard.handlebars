@@ -3,7 +3,7 @@
 </div>
 
 <script>
-  var now = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
+  var today = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
   var findResults = function() {
 
   setTimeout(
@@ -11,7 +11,7 @@
       var winners = [];
       var losers = [];
       $.ajax({
-        url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/boxscore.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+        url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/boxscore.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
         type: "GET",
         success: function(res) {
           for (var j = 0; j < res.league.games.length; j++) {
@@ -29,7 +29,6 @@
                 winner = awayTeam
               };
             };
-
 
               function updateGames(games) {
                 $.ajax({
@@ -66,8 +65,8 @@
         });
       }, 1500);
       
-  };
-;
+};
+
 
   // THis here is console logging  the ID of the user that is signed in... when wanting to reference the user we can use {{userid}}--- this is becuase it was passed in authcontroller.js
   function showUserID(){
@@ -79,30 +78,30 @@
   //-------------------------------------------------
 
 var postGames = function(gameData) {
-  $.post("/api/games", gameData)
-  .then(getGames);
-};
+    $.post("/api/games", gameData)
+    .then(getGames);
+  };
 
-var getGames = function() {
-  $.ajax({
-    url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
-    type: "GET",
-    success: function(data) {
-      // console.log(data.games.length);
-      for (var i = 0; i < data.games.length; i++) {
-        var homeTeams = [];
-        var awayTeams = [];
-        var awayTeam = data.games[i].away.name;
-        var homeTeam = data.games[i].home.name;
+  var getGames = function() {
+    $.ajax({
+      url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+      type: "GET",
+      success: function(data) {
+        // console.log(data.games.length);
+        for (var i = 0; i < data.games.length; i++) {
+          var homeTeams = [];
+          var awayTeams = [];
+          var awayTeam = data.games[i].away.name;
+          var homeTeam = data.games[i].home.name;
 
-        homeTeams.push(homeTeam);
-        awayTeams.push(awayTeam);
-        // var createDiv = $("<div style='text-align: center;'><h1>Game " + gameNum + "</h1><br></div>");
-        // createDiv.append("<p>HOME TEAM:</p>" + "<button class=allTeams>" + homeTeam + "</button>" + "<p> vs </p>" + "<p>AWAY TEAM:</p>" + "<button class=allTeams>" + awayTeam + "</button>" + "<hr>")
+          homeTeams.push(homeTeam);
+          awayTeams.push(awayTeam);
+          // var createDiv = $("<div style='text-align: center;'><h1>Game " + gameNum + "</h1><br></div>");
+          // createDiv.append("<p>HOME TEAM:</p>" + "<button class=allTeams>" + homeTeam + "</button>" + "<p> vs </p>" + "<p>AWAY TEAM:</p>" + "<button class=allTeams>" + awayTeam + "</button>" + "<hr>")
+        }
       }
-    }
-  });
-};
+    });
+  };
 
 var showAction = function() {
   var homeTeams = [];
@@ -111,10 +110,10 @@ var showAction = function() {
 
   $(".loginPrompt").empty();
   $.ajax({
-    url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + now + "/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+    url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
     type: "GET",
     success: function(data) {
-      console.log(data);
+      console.log(data.date);
       console.log(data.games.length);
       // console.log(data.games.length);
       for (var i = 0; i < data.games.length; i++) {
@@ -137,13 +136,14 @@ var showAction = function() {
 
         homeTeams.push(homeTeam);
         awayTeams.push(awayTeam);
+
         // var createDiv = $("<div style='text-align: center;'><h1>Game " + gameNum + "</h1><br></div>");
         // createDiv.append("<p>HOME TEAM:</p>" + "<button class=allTeams>" + homeTeam + "</button>" + "<p> vs </p>" + "<p>AWAY TEAM:</p>" + "<button class=allTeams>" + awayTeam + "</button>" + "<hr>");
         createDiv.append(
           `<div class='card-header'>Game:  
-            ${gameNum} </div><div class='card-body'><div class='row'><div class='col-6'><button type='button' data-teamName = ${homeTeam} class='btn btn-success'> 
+            ${gameNum} </div><div class='card-body'><div class='row'><div class='col-6'><button type='button' data-teamName = ${homeTeam} class='btn btn-success bet-button'> 
             ${homeTeam} 
-            </button></div><div class='col-6'><button type='button' data-teamName = ${awayTeam} class='btn btn-success'> 
+            </button></div><div class='col-6'><button type='button' data-teamName = ${awayTeam} class='btn btn-success bet-button'> 
             ${awayTeam} 
             </button></div></div></div><div class='card-footer text-muted'>Status:
             ${gameStatus} 
@@ -157,8 +157,9 @@ var showAction = function() {
   postGames();
 };
 
+
   showAction();
-  findResults();
+ // findResults();
 
   // $.post("/api/userinfo", {
   //   username: userName,
@@ -171,5 +172,13 @@ var showAction = function() {
 
   // showAction();
 // });
+$(document).ready(function() {
+  console.log("ready");
+
+  $(".bet-button").click(function(){
+    console.log("cool");
+    console.log($(this).data);
+  })
+})
 
 </script>

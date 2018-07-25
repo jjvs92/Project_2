@@ -24,7 +24,26 @@ app.post('/signin', passport.authenticate('local-signin',  { successRedirect: '/
                                                     failureRedirect: '/signin'}
                                                     ));
 
+app.post('/api/bets', function(req, res){
+    db.Bet.create({
+        user_id: 2,
+        game_id: "testing",
+        user_pick: "Rangers",
+        bet_amount: 45
+    }).then(function(dbBets){
+        res.json(dbBets);
+    })
+});
 
+// This Route will show all bets 
+
+app.get("/api/bets", function(req, res){
+    db.Bet.findAll().then(function(dbBets){
+        res.json(dbBets);
+    })
+})
+
+//------------------------------------
 
 app.post("/api/games", function(req, res) {
 console.log(req.body);

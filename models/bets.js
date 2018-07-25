@@ -1,8 +1,8 @@
 module.exports = function(sequelize, Sequelize) {
 
-	var Bet = sequelize.define('bet', {
+	var Bet = sequelize.define('Bet', {
 		user_id: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
             allowNull: false},
         game_id: {
             type: Sequelize.STRING,
