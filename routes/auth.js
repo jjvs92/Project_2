@@ -39,38 +39,39 @@ app.post('/api/bets', function(req, res){
 
 app.get("/api/bets", function(req, res){
     db.Bet.findAll().then(function(dbBets){
-        res.json(dbBets);
-    })
-})
+      res.json(dbBets);
+    });
+  });
 
 //------------------------------------
 
 app.post("/api/games", function(req, res) {
-console.log(req.body);
-db.Game.create(req.body).then(function(response) {
-    res.json(response);
-});
-});
+    console.log(req.body);
+    db.Game.create(req.body).then(function(response) {
+      res.json(response);
+    });
+  });
 
-app.put("/api/games", function(req, res) {
-console.log(req.body);
-db.Game.update({
-    game_result: req.body.game_result
-}, {
-    where: {
-    id: req.body.id
-    }
-}).then(function(response) {
-    res.json(response);
-});
-});
-                                            
+app.put("/api/games/:id", function(req, res) {
+    console.log(req.body);
+    var realID = req.params.id;
+    db.Game.update(
+      {
+        game_result: req.body.game_result
+      },
+      {
+        where: {
+          id: realID
+        }
+      }).then(function(response) {
+      res.json(response);
+    });
+  });
+
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
-        return next();
+    return next();
 
     res.redirect('/signin');
-}
-
-
+  }
 }

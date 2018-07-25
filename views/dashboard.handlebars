@@ -32,31 +32,35 @@
               };
             };
 
-              {{!-- function updateGames(games) {
-                $.ajax({
-                  method: "PUT",
-                  url: "/api/games",
-                  data: games
-                }).then(getGames);
-              }; --}}
-
+            function updateWinner() {
+              // event.preventDefault();
+              var id = [j];
+              var updatedWinner = winner;
+      
               var newResult = {
                 game_result: winner
               };
 
-              $.put("/api/games", newResult).then(function() {
-                console.log("New game added");
-                console.log(newResult);
-              });
+              $.ajax('/api/games/' + id, {
+                type: "PUT",
+                data: newResult 
+              }).then(
+                function() {
+                  console.log("Result added", newResult);
+                }
+              );
+            }
+            findWinner();
+            updateWinner();
 
-              if (homeScore > awayScore) {
-                winners.push(homeTeam);
-                losers.push(awayTeam);
-              } else {
-                winners.push(awayTeam);
-                losers.push(homeTeam);
-              }
-            };
+            if (homeScore > awayScore) {
+              winners.push(homeTeam);
+              losers.push(awayTeam);
+            } else {
+              winners.push(awayTeam);
+              losers.push(homeTeam);
+            }
+          };
             console.log("Winners:");
             console.log(winners);
             console.log("Losers:");
@@ -130,8 +134,6 @@ var showAction = function() {
           away_team: awayTeam,
           game_status: gameStatus
         };
-
-        $.get('/api/games', )
 
         $.post('/api/games', newGame).then(function() {
           console.log("New game added");

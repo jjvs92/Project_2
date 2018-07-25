@@ -30,29 +30,24 @@ var findResults = function() {
             // event.preventDefault();
             var updatedWinner = winner;
             updateGames(updatedWinner);
-          }
 
-          function updateGames(games) {
-            $.ajax({
-              method: "PUT",
-              url: "/api/games",
-              data: games
-            }).then(getGames);
-          }
+            var newResult = {
+              game_result: winner
+            };
 
+            function updateGames(games) {
+              $.ajax({
+                method: "POST",
+                url: "/api/games",
+                data: games
+              }).then(newResult);
+            }
+
+          }
           updateWinner();
 
-          // var newResult = {
-          //   game_result: winner
-          // };
+          
 
-          // $.put("/api/games", newResult).then(function() {
-          //   console.log("New game added");
-          //   console.log(newResult);
-          // });
-
-          // console.log("Home score: " + homeScore);
-          // console.log("Away score: " + awayScore);
           if (homeScore > awayScore) {
             winners.push(homeTeam);
             losers.push(awayTeam);
