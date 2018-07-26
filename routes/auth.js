@@ -60,6 +60,31 @@ module.exports = function(app, passport) {
         res.json(dbUser);
       });
   });
+  // ----------------------------------------------------
+
+  // This route will udpate the users wallet after placing bet 
+
+  app.put("/api/user/wallet/:id", function(req, res){
+    console.log(req.body);
+    var betID = req.params.id;
+
+    db.user.update(
+      {
+        wallet: req.body.new_wallet
+      },{
+        where: {
+          id: betID
+        }
+      }
+    ).then(function(response){
+      res.json(response);
+    });
+   
+    
+  });
+
+
+  // ----------------------------------------------------
 
   app.post("/api/games", function(req, res) {
     console.log(req.body);
