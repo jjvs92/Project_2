@@ -39,21 +39,38 @@ app.post('/api/bets', function(req, res){
 
 app.get("/api/bets", function(req, res){
     db.Bet.findAll().then(function(dbBets){
-        res.json(dbBets);
-    })
-})
+      res.json(dbBets);
+    });
+  });
 
 //------------------------------------
 
 app.post("/api/games", function(req, res) {
-console.log(req.body);
-db.Game.create(req.body).then(function(response) {
-    res.json(response);
-});
-});
+    // console.log(req.body);
+    db.Game.create(req.body).then(function(response) {
+      res.json(response);
+    });
+  });
 
+app.put("/api/games/:id", function(req, res) {
+    console.log(req.body);
+    var realID = req.params.id;
+    console.log("Real ID: ");
+    console.log(realID);
+    db.Game.update(
+      {
+        game_result: req.body.game_result
+      },
+      {
+        where: {
+          id: realID
+        }
+      }).then(function(response) {
+      res.json(response);
+    });
+  });
 
- // This route is pulling the games from the database to later ensure duplciate games are not posted
+  // This route is pulling the games from the database to later ensure duplciate games are not posted
  
 app.get("/api/games", function(req,res) {
     db.Game.findAll().then(function(dbGames){
@@ -76,12 +93,11 @@ db.Game.update({
 });
 });
                                             
+
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
-        return next();
+    return next();
 
     res.redirect('/signin');
-}
-
-
+  }
 }

@@ -29,8 +29,13 @@ body {
   margin-bottom: 20px;
 }
 
-.inputs {
+.card-header {
+  font-size: 30px;
+  color: red;
+  background-color: #131317;
+}
 
+.inputs {
   width: 100%;
   line-height: 15px;
   padding: 5px;
