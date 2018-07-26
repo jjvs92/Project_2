@@ -7,6 +7,7 @@
 </div>
 
 <script>
+  var key = "fpqcanwygm37gnuaan27k6ud"
   var today = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
   var hour = moment().calendar();
 
@@ -19,7 +20,7 @@
       var winners = [];
       var losers = [];
       $.ajax({
-        url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/boxscore.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+        url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/boxscore.json?api_key=" + key,
         type: "GET",
         success: function(res) {
           console.log(res);
@@ -84,6 +85,9 @@
       
 };
   // THis here is console logging  the ID of the user that is signed in... when wanting to reference the user we can use {{userid}}--- this is becuase it was passed in authcontroller.js
+
+  var signedInUser = {{userid}};
+  var signedInWallet = {{userWallet}};
   function showUserID(){
     console.log({{userid}});
     console.log({{userWallet}});
@@ -99,7 +103,7 @@ var postGames = function(gameData) {
 
   var getGames = function() {
     $.ajax({
-      url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+      url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=" + key,
       type: "GET",
       success: function(data) {
         // console.log(data.games.length);
@@ -123,7 +127,7 @@ var showAction = function() {
 
   $(".loginPrompt").empty();
   $.ajax({
-    url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+    url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/schedule.json?api_key=" + key,
     type: "GET",
     success: function(data) {
       console.log(data.date);
@@ -160,9 +164,9 @@ var showAction = function() {
 
         createDiv.append(
           `<div class='card-header'>GAME
-            #${gameNum} </div><div class='card-body'><div class='row'><div class='col-6'><button type='button' data-teamName = ${homeCity + " " + homeTeam} class='btn btn-success bet-button'> 
+            #${gameNum} </div><div class='card-body'><div class='row'><div class='col-6'><button type='button' data-gameID = ${gameID} class='btn btn-success bet-button'> 
             ${homeCity + " " + homeTeam} 
-            </button></div><div class='col-6'><button type='button' data-teamName = ${awayCity + " " + awayTeam} class='btn btn-success bet-button'> 
+            </button></div><div class='col-6'><button type='button' data-gameID= ${gameID} class='btn btn-success bet-button'> 
             ${awayCity + " " + awayTeam} 
             </button></div></div></div><div class='card-footer text-muted'>GAME STATUS:
             ${gameStatus} 
@@ -180,14 +184,20 @@ $(document).ready(function() {
 
   $(".bet-button").on("click", function(){
     console.log("cools");
+
+    
+
     //console.log($(this).text().trim());
     var teamBet = $(this).text().trim();
     var bet = prompt("How much would you like to bet on " + teamBet + "?");
-    console.log(teamBet, bet);
+    console.log(teamBet, parseInt(bet));
+    var userBetGameID = this.getAttribute("data-gameID");
+    
+    if(parseInt(bet) < signedInWallet){
 
     var newBet = {
       user_id: {{userid}},
-      game_id: "game_id",
+      game_id: userBetGameID,
       user_pick: teamBet,
       bet_amount: bet
     }
@@ -195,12 +205,10 @@ $(document).ready(function() {
     $.post("/api/bets", newBet)
       .then(function(data) {
     });
+
+  } else{alert("you do not have enough");}
   });
 });
-<<<<<<< HEAD
-
-=======
->>>>>>> 38cc52291121ffb0950926d91b14323046d34ee3
 
 findResults();
 showAction();
