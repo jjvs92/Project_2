@@ -176,14 +176,14 @@ var showAction = function() {
               <div class='col-6 homeTeam'>
                 <img class="teamImg" src="./images/${homeTeam}.png" alt="${homeTeam}">
                 <br>
-                <button type='button' data-teamName = ${homeCity + " " + homeTeam} class='btn btn-success bet-button'>
+                <button type='button' data-gameID= ${gameID} data-teamName = ${homeCity + " " + homeTeam} class='btn btn-success bet-button'>
                   ${homeCity + " " + homeTeam}
                 </button>
               </div>
               <div class='col-6 awayTeam'>
                 <img src="./images/${awayTeam}.png" alt="${awayTeam}">
                 <br>
-                <button type='button' data-teamName = ${awayCity + " " + awayTeam} class='btn btn-success bet-button'>
+                <button type='button' data-gameID= ${gameID} data-teamName = ${awayCity + " " + awayTeam} class='btn btn-success bet-button'>
                   ${awayCity + " " + awayTeam}
                 </button>
               </div>
@@ -246,6 +246,22 @@ $(document).ready(function() {
     $.post("/api/bets", newBet)
       .then(function(data) {
     });
+
+    signedInWallet = signedInWallet - parseInt(bet);
+
+    console.log(signedInWallet);
+    var newWallet = {
+        new_wallet: signedInWallet
+    }
+
+    $.ajax("/api/user/wallet/" + signedInUser, {
+      type: "PUT",
+      data: newWallet
+    }).then(
+      function(){
+        console.log("Wallet Updated " + signedInWallet);
+      }
+    )
 
   } else{alert("you do not have enough");}
   });
