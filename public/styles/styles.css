@@ -9,6 +9,17 @@ body {
   background: linear-gradient(#1D1B1B, #353434) center center fixed;
   background-repeat: no-repeat;
   background-size: cover;
+  font-family: sportsCenter;
+}
+
+@font-face {
+  font-family: logoFont;
+  src: url(../fonts/Brannboll.ttf)
+}
+
+@font-face {
+  font-family: sportsCenter;
+  src: url(../fonts/Sportscenter.ttf)
 }
 
 .container {
@@ -23,17 +34,17 @@ body {
 .box {
   padding: 70px;
   background-color: #131317;
-  border: 1px black solid;
+  border: 1px #000000 solid;
 }
 
 .header {
-  color: red;
+  color: #ff0000;
   margin-bottom: 20px;
 }
 
 .card-header {
   font-size: 30px;
-  color: red;
+  color: #ff0000;
   background-color: #131317;
 }
 
@@ -54,24 +65,24 @@ body {
 .labels {
   margin-top: 20px;
   font-size: 1em;
-  color: white;
+  color: #ffffff;
 }
 
 .btn {
   margin-top: 30px;
   border-radius: 20px;
   background: #ff0000;
-  color: white;
+  color: #ffffff;
   font-size: 1em;
   border: none;
 }
 
 .btn:hover {
-  color: white;
+  color: #ffffff;
 }
 
 .btn:focus {
-  border-color: white;
+  border-color: #ffffff;
 }
 
 .auth-form {
@@ -103,18 +114,30 @@ body {
 }
 
 .flex1 {
-  margin: 0 10%;
+  margin: 0 5%;
+  display: inline-flex;
 }
 
 .flex2 {
   flex-direction: column;
-  margin: 0 10%;
+  margin: 0 5%;
 }
 
 .navElement {
   color: #f5f5f5;
 }
 
+.appName {
+  font-size: 4rem;
+  font-family: logoFont;
+  color: #ff0000;
+  margin: auto;
+  text-shadow: 2px 1px #ffffff;
+}
+
+.sharkLogo {
+  margin-right: 20px;
+}
 /* Dashboard */
 .dashboard {
   display: flex;
@@ -144,7 +167,7 @@ Img {
 .leaderFlex {
   display: inline-table;
   width: 80%;
-  border: white 1px solid;
+  border: #ffffff 1px solid;
   table-layout: fixed;
 }
 
@@ -153,18 +176,18 @@ Img {
 }
 
 .leaderNum {
-  color: white;
+  color: #ffffff;
   text-align: center;
   width: 10%;
 }
 
 .leaderName {
-  color: white;
+  color: #ffffff;
   text-align: center;
 }
 
 .leaderEarnings {
-  color: white;
+  color: #ffffff;
   text-align: center;
 }
 
@@ -190,7 +213,7 @@ hr {
 /* LeaderBoard */
 
 table, th, td {
-  border: 1px solid white;
+  border: 1px solid #ffffff;
   border-collapse: collapse;
 }
 
