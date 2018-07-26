@@ -3,6 +3,9 @@
   <div class="col-6 games"></div>
   <div class="col-6 leaderBoard">
     <h1 class="leader">Leader Board</h1>
+    <div class="leaderNum">#</div>
+    <div class="leaderName">User</div>
+    <div class="leaderEarnings">Earnings</div>
   </div>
 </div>
 
@@ -166,13 +169,14 @@ var showAction = function() {
         awayTeams.push(awayTeam);
 
         createDiv.append(
-          `<div class='card-header'>GAME
-            #${gameNum}
+          `<div class='card-header'>GAME #${gameNum}
+            <br>
+            <span class="homeTeamHeader">@${homeCity}</span>
           </div>
           <div class='card-body'>
             <div class='row'>
               <div class='col-6 homeTeam'>
-                <img src="./images/${homeTeam}.png" alt="${homeTeam}">
+                <img class="teamImg" src="./images/${homeTeam}.png" alt="${homeTeam}">
                 <br>
                 <button type='button' data-gameID= ${gameID} data-teamName = ${homeCity + " " + homeTeam} class='btn btn-success bet-button'>
                   ${homeCity + " " + homeTeam}
