@@ -30,6 +30,7 @@ module.exports = function(app, passport) {
     db.Bet.create({
       user_id: req.body.user_id,
       game_id: req.body.game_id,
+      user_name: req.body.user_name,
       user_pick: req.body.user_pick,
       bet_amount: req.body.bet_amount
     }).then(function(dbBets) {
