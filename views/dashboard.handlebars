@@ -10,6 +10,10 @@
         <th class="leaderEarnings">Earnings</th>
       </tr>
     </table>
+    <ol>
+      <div class="betsHistory"></div>
+    </ol>
+
   </div>
 </div>
 
@@ -274,10 +278,24 @@ $(document).ready(function() {
   });
 });
 
+var showBets = function(){
+  $.get("/api/bets", function(data){
+    console.log(data);
+    for(var i=0; i< data.length; i++){
+      var user = data[i].user_name;
+      var bet = data[i].bet_amount;
+      var team = data[i].user_pick;
+      var newBetLine = "<li>" + user + " bet " + bet + " on " + team + "</li>";
+      $(".betsHistory").append(newBetLine);
+    };
+    
+  });
+}
 
 
 findResults();
 showAction();
+showBets();
 
 
 </script>
