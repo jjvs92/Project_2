@@ -4,7 +4,6 @@
 
 <script>
   var today = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
-  
   var findResults = function() {
 
   setTimeout(
@@ -17,59 +16,51 @@
         success: function(res) {
           for (var j = 0; j < res.league.games.length; j++) {
             var thisGame = res.league.games[j];
-            var homeCity = thisGame.game.home.market;
-            var awayCity = thisGame.game.away.market;
             var homeTeam = thisGame.game.home.name;
             var awayTeam = thisGame.game.away.name;
             var homeScore = thisGame.game.home.runs;
             var awayScore = thisGame.game.away.runs;
-            var gameStatus = thisGame.game.status;
-            var winner;
 
+            var winner;
             var findWinner = function() {
               if (homeScore > awayScore) {
-                winner = homeCity + " " + homeTeam
+                winner = homeTeam
               } else {
-                winner = awayCity + " " + awayTeam
+                winner = awayTeam
               };
             };
 
-            function updateWinner() {
-              // event.preventDefault();
-              var id = (JSON.parse([j]) + 1);
-              var updatedWinner = winner;
-      
+              function updateGames(games) {
+                $.ajax({
+                  method: "PUT",
+                  url: "/api/games",
+                  data: games
+                }).then(getGames);
+              };
+
+              
+
               var newResult = {
                 game_result: winner
               };
 
-              $.ajax('/api/games/' + id, {
-                type: "PUT",
-                data: newResult 
-              }).then(
-                function() {
-                  console.log("Result added", newResult);
-                }
-              );
-            }
+              $.put("/api/games", newResult).then(function() {
+                console.log("New game added");
+                console.log(newResult);
+              });
 
-            if (gameStatus === "closed") {
-              console.log("this game is over");
-              findWinner();
-              updateWinner();
-            } else {
-              console.log("this game is NOT over");
+              if (homeScore > awayScore) {
+                winners.push(homeTeam);
+                losers.push(awayTeam);
+              } else {
+                winners.push(awayTeam);
+                losers.push(homeTeam);
+              }
             };
-
-            if (homeScore > awayScore) {
-              winners.push(homeTeam);
-              losers.push(awayTeam);
-            } else {
-              winners.push(awayTeam);
-              losers.push(homeTeam);
-            }
-            };
-            
+            console.log("Winners:");
+            console.log(winners);
+            console.log("Losers:");
+            console.log(losers);
           }
         });
       }, 1500);
@@ -127,24 +118,20 @@ var showAction = function() {
       // console.log(data.games.length);
       for (var i = 0; i < data.games.length; i++) {
         var gameNum = [i + 1];
-        var homeCity = data.games[i].home.market;
-        var awayCity = data.games[i].away.market;
         var awayTeam = data.games[i].away.name;
         var homeTeam = data.games[i].home.name;
         var gameStatus = data.games[i].status;
         var gameDate = data.date
-        var gameID = data.games[i].id
 
         var newGame = {
-          home_team: homeCity + " " + homeTeam,
-          away_team: awayCity + " " + awayTeam,
-          game_status: gameStatus,
-          game_id: gameID
+          home_team: homeTeam,
+          away_team: awayTeam,
+          game_status: gameStatus
         };
 
         $.post('/api/games', newGame).then(function() {
           console.log("New game added");
-          {{!-- console.log(newGame); --}}
+          console.log(newGame);
         });
 
         homeTeams.push(homeTeam);
@@ -154,10 +141,10 @@ var showAction = function() {
         // createDiv.append("<p>HOME TEAM:</p>" + "<button class=allTeams>" + homeTeam + "</button>" + "<p> vs </p>" + "<p>AWAY TEAM:</p>" + "<button class=allTeams>" + awayTeam + "</button>" + "<hr>");
         createDiv.append(
           `<div class='card-header'>Game:  
-            ${gameNum} </div><div class='card-body'><div class='row'><div class='col-6'><button type='button' data-teamName = ${homeCity + " " + homeTeam} class='btn btn-success bet-button'> 
-            ${homeCity + " " + homeTeam} 
-            </button></div><div class='col-6'><button type='button' data-teamName = ${awayCity + " " + awayTeam} class='btn btn-success bet-button'> 
-            ${awayCity + " " + awayTeam} 
+            ${gameNum} </div><div class='card-body'><div class='row'><div class='col-6'><button type='button' data-teamName = ${homeTeam} class='btn btn-success bet-button'> 
+            ${homeTeam} 
+            </button></div><div class='col-6'><button type='button' data-teamName = ${awayTeam} class='btn btn-success bet-button'> 
+            ${awayTeam} 
             </button></div></div></div><div class='card-footer text-muted'>Status:
             ${gameStatus} 
             </div><br>`
@@ -168,18 +155,30 @@ var showAction = function() {
     }
   });
   postGames();
-  findResults();
 };
-  
+
+
+  showAction();
+ // findResults();
+
+  // $.post("/api/userinfo", {
+  //   username: userName,
+  //   password: userPassword
+  // }).then(function(data){
+  //   window.location.replace(data);
+  // }).catch(function(err){
+  //   console.log(err);
+  // });
+
+  // showAction();
+// });
 $(document).ready(function() {
   console.log("ready");
 
   $(".bet-button").click(function(){
     console.log("cool");
     console.log($(this).data);
-  });
-});
-
-showAction();
+  })
+})
 
 </script>
