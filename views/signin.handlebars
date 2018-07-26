@@ -1,0 +1,27 @@
+{{> header}}
+<div class="container signIn">
+  <div class="auth-form" id="login">
+    <div class="box">
+      <form action="signin" method="post" name="signin" id="signin">
+        <div class="form-header">
+          <h1 class="header">Sign In</h1>
+        </div>
+        <div class="form-body">
+          {{!-- Username input --}}
+          <label class="labels" for="email">Email</label>
+          <br>
+          <input class="inputs" name ="email" type="text" id="email">
+          <br>
+          {{!-- Password input --}}
+          <label class="labels" for="password">Password</label>
+          <br>
+          <input class="inputs" name="password" type="password" id="password" required>
+          <br>
+          {{!-- Submit button --}}
+          <input class="inputs btn" type="submit" id="loginUser" value="Sign In" required>
+        </div>
+      </form>
+        <a class="inputs btn" href="/signup">Create Account</a>
+    </div>
+  </div>
+</div>
