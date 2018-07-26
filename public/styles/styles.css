@@ -148,6 +148,11 @@ body {
 
 .appName1 {
   margin-top: 20px;
+  font-size: 4rem;
+  font-family: logoFont;
+  color: #ff0000;
+  margin: auto;
+  text-shadow: 2px 1px #7e7e7e;
 }
 
 .sharkLogo {

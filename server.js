@@ -31,10 +31,6 @@ app.set('view engine', 'handlebars');
 // app.set('view engine', '.hbs');
 
 
-app.get('/', function(req, res){
-res.redirect('/signIn');
-});
-
 //Models
 var models = require("./models");
 
