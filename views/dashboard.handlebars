@@ -82,9 +82,14 @@
 
 
   // THis here is console logging  the ID of the user that is signed in... when wanting to reference the user we can use {{userid}}--- this is becuase it was passed in authcontroller.js
+
+  var userSignedInID = {{userid}};
   function showUserID(){
-    console.log({{userid}});
-    console.log({{userWallet}})
+    console.log(userSignedInID);
+    console.log({{userWallet}});
+    //console.log({{userName}});
+    //console.log({{firstName}});
+
   }
   showUserID();
             
@@ -146,7 +151,8 @@ var showAction = function() {
           home_team: homeCity + " " + homeTeam,
           away_team: awayCity + " " + awayTeam,
           game_status: gameStatus,
-          game_id: gameID
+          game_id: gameID,
+          game_date: gameDate
         };
 
         $.post('/api/games', newGame).then(function() {
@@ -171,12 +177,9 @@ var showAction = function() {
         );
 
         $(".games").append(createDiv);
-        postGames(newGame);        
       }    
     }
   });
-
-  postGames();
   findResults();
 };
   
@@ -192,6 +195,12 @@ $(document).ready(function() {
 
 
 showAction();
+
+// THIS GET REQUEST WILL BE ADDED TO THE BET BUTTON TO ENSURE THE USER HAS ENOUGH FUNDS TO PLACE THE BET
+
+
+
+
 
 
 </script>
