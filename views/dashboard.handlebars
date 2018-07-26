@@ -124,6 +124,7 @@ var showAction = function() {
   var homeTeams = [];
   var awayTeams = [];
   var createDiv = $("<div class='card text-center'></div>");
+  var createImg = $("<img>")
 
   $(".loginPrompt").empty();
   $.ajax({
@@ -166,22 +167,46 @@ var showAction = function() {
         // createDiv.append("<p>HOME TEAM:</p>" + "<button class=allTeams>" + homeTeam + "</button>" + "<p> vs </p>" + "<p>AWAY TEAM:</p>" + "<button class=allTeams>" + awayTeam + "</button>" + "<hr>");
         createDiv.append(
           `<div class='card-header'>GAME
-            #${gameNum} </div><div class='card-body'><div class='row'><div class='col-6'><button type='button' data-teamName = ${homeCity + " " + homeTeam} class='btn btn-success bet-button'> 
-            ${homeCity + " " + homeTeam} 
-            </button></div><div class='col-6'><button type='button' data-teamName = ${awayCity + " " + awayTeam} class='btn btn-success bet-button'> 
-            ${awayCity + " " + awayTeam} 
-            </button></div></div></div><div class='card-footer text-muted'>GAME STATUS:
-            ${gameStatus} 
-            </div><br>`
+            #${gameNum}
+          </div>
+          <div class='card-body'>
+            <div class='row'>
+              <div class='col-6 homeTeam'>
+                <img src="./images/${homeTeam}.png" alt="${homeTeam}">
+                <br>
+                <button type='button' data-teamName = ${homeCity + " " + homeTeam} class='btn btn-success bet-button'>
+                  ${homeCity + " " + homeTeam}
+                </button>
+              </div>
+              <div class='col-6 awayTeam'>
+                <img src="./images/${awayTeam}.png" alt="${awayTeam}">
+                <br>
+                <button type='button' data-teamName = ${awayCity + " " + awayTeam} class='btn btn-success bet-button'>
+                  ${awayCity + " " + awayTeam}
+                </button>
+              </div>
+            </div>
+            <hr>
+            <div class='row'>          
+              <div class='card-footer text-muted'>GAME STATUS:
+              ${gameStatus}
+              </div>
+            </div>
+          </div>
+            `
         );
-        console.log(homeTeam)
+           //<img src="./images/Yankees.png" alt="Yankees">
+        createImg.attr("src", "./images/" + homeTeam + ".png");
+        createImg.attr("alt", homeTeam);
+
+        console.log(awayTeam)
         $(".games").append(createDiv);
       }    
     }
   });
   findResults();
 };
-  
+
 $(document).ready(function() {
   console.log("ready");
 

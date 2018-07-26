@@ -116,6 +116,7 @@ body {
   flex: 1;
   height: 100vh;
   overflow: auto;
+  padding-right: 0;
 }
 
 .leaderBoard {
@@ -125,4 +126,12 @@ body {
 
 .leader {
   color: ff0000;
+}
+
+.card-footer {
+  margin: auto;
+}
+
+.homeTeam {
+  border-right: 2px solid #a9a9a9;
 }
