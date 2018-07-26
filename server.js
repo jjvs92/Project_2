@@ -52,13 +52,10 @@ require('./config/passport/passport.js')(passport,models.user);
 console.log('Nice! Database looks fine')
 
 }).catch(function(err){
-console.log(err,"Something went wrong with the Database Update!")
+console.log(err,"Something went wrong with the Database Update!");
 });
-
 
 
 app.listen(PORT, function() {
-  console.log("Listening on PORT: " + PORT)
-
+  console.log("Listening on PORT: " + PORT);
 });
-

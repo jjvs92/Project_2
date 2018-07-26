@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: "none"
     }, 
     game_date: {
-      type: DataTypes. STRING,
+      type: DataTypes.STRING,
       allowNull: false
       }
   });
