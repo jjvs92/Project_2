@@ -52,6 +52,17 @@ db.Game.create(req.body).then(function(response) {
 });
 });
 
+
+ // This route is pulling the games from the database to later ensure duplciate games are not posted
+ 
+app.get("/api/games", function(req,res) {
+    db.Game.findAll().then(function(dbGames){
+        res.json(dbGames);
+    })
+})
+
+// ----------------------------------------
+
 app.put("/api/games", function(req, res) {
 console.log(req.body);
 db.Game.update({

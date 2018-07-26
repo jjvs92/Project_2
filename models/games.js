@@ -16,7 +16,11 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: "none"
-    }
+    }, 
+    game_date: {
+      type: DataTypes. STRING,
+      allowNull: false
+      }
   });
   return Game;
 };
