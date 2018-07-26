@@ -33,7 +33,7 @@ body {
 }
 
 .box {
-  padding: 70px;
+  padding: 100px;
   background-color: #131317;
   border: 1px #000000 solid;
 }
@@ -45,6 +45,7 @@ body {
 }
 
 .card-header {
+  border-bottom: 1px solid #ffffff;
   font-size: 30px;
   color: #ff0000;
   background-color: #131317;
@@ -128,6 +129,11 @@ body {
   margin: auto;
 }
 
+.flex3 {
+  margin: auto;
+  margin-bottom: 20px;
+}
+
 .navElement {
   color: #f5f5f5;
 }
@@ -137,11 +143,20 @@ body {
   font-family: logoFont;
   color: #ff0000;
   margin: auto;
-  text-shadow: 2px 1px #ffffff;
+  text-shadow: 2px 1px #7e7e7e;
+}
+
+.appName1 {
+  margin-top: 20px;
 }
 
 .sharkLogo {
   margin-right: 20px;
+}
+
+.sharkLogo1 {
+  margin: auto;
+  transform: translateX(100px);
 }
 /* Dashboard */
 
@@ -158,6 +173,7 @@ Img {
   width: 80%;
   margin: auto;
   max-width: 100%;
+  margin-bottom: 100px;
 }
 
 .flexToggle {
@@ -220,7 +236,7 @@ Img {
   text-align: center;
 }
 
-.leaderEarnings {
+.leaderWinnings {
   color: #ffffff;
   text-align: center;
 }
@@ -241,7 +257,6 @@ hr {
 }
 
 .homeTeam {
-  border-right: 2px solid #a9a9a9;
   max-width: 100%;
   border-bottom: 1px solid #a9a9a9;
   flex: 0 0 35%;
@@ -272,6 +287,7 @@ th, td {
   }
 
   .homeTeam {
+    border-right: 2px solid #a9a9a9;
     max-width: 50%;
     flex: 1;
     border-bottom: none;
@@ -284,7 +300,7 @@ th, td {
   }
 }
 
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 1124px) {
   .dashboard {
     display: flex;
   }
