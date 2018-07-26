@@ -4,6 +4,9 @@
 
 <script>
   var today = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
+  var hour = moment().calendar();
+
+  console.log(hour);
   
   var findResults = function() {
 
@@ -15,6 +18,7 @@
         url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/boxscore.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
         type: "GET",
         success: function(res) {
+          console.log(res);
           for (var j = 0; j < res.league.games.length; j++) {
             var thisGame = res.league.games[j];
             var homeCity = thisGame.game.home.market;
@@ -123,7 +127,8 @@ var showAction = function() {
     type: "GET",
     success: function(data) {
       console.log(data.date);
-      console.log(data.games.length);
+
+      //console.log(data.games.length);
       // console.log(data.games.length);
       for (var i = 0; i < data.games.length; i++) {
         var gameNum = [i + 1];
@@ -137,6 +142,7 @@ var showAction = function() {
         var gameID = data.games[i].id
 
         var newGame = {
+
           home_team: homeCity + " " + homeTeam,
           away_team: awayCity + " " + awayTeam,
           game_status: gameStatus,
@@ -146,6 +152,7 @@ var showAction = function() {
         $.post('/api/games', newGame).then(function() {
           console.log("New game added");
         });
+
 
         homeTeams.push(homeTeam);
         awayTeams.push(awayTeam);
@@ -164,9 +171,11 @@ var showAction = function() {
         );
 
         $(".games").append(createDiv);
-      }
+        postGames(newGame);        
+      }    
     }
   });
+
   postGames();
   findResults();
 };
@@ -176,10 +185,13 @@ $(document).ready(function() {
 
   $(".bet-button").click(function(){
     console.log("cool");
-    console.log($(this).data);
-  });
-});
+
+    console.log(this.getAttribute("data-teamname"));
+  })
+})
+
 
 showAction();
+
 
 </script>

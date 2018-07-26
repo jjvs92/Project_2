@@ -70,6 +70,30 @@ app.put("/api/games/:id", function(req, res) {
     });
   });
 
+  // This route is pulling the games from the database to later ensure duplciate games are not posted
+ 
+app.get("/api/games", function(req,res) {
+    db.Game.findAll().then(function(dbGames){
+        res.json(dbGames);
+    })
+})
+
+// ----------------------------------------
+
+app.put("/api/games", function(req, res) {
+console.log(req.body);
+db.Game.update({
+    game_result: req.body.game_result
+}, {
+    where: {
+    id: req.body.id
+    }
+}).then(function(response) {
+    res.json(response);
+});
+});
+                                            
+
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
     return next();
