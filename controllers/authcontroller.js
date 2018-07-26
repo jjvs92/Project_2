@@ -14,8 +14,7 @@ exports.signin = function(req,res){
 }
 
 exports.dashboard = function(req,res){
-
-	res.render('dashboard', {userid: req.user.id, userWallet: req.user.wallet}); 
+	res.render('dashboard', {userid: req.user.id, userWallet: req.user.wallet, username: req.user.username}); 
 
 }
 
