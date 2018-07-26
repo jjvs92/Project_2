@@ -46,7 +46,7 @@ app.get("/api/bets", function(req, res){
 //------------------------------------
 
 app.post("/api/games", function(req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     db.Game.create(req.body).then(function(response) {
       res.json(response);
     });
@@ -55,6 +55,8 @@ app.post("/api/games", function(req, res) {
 app.put("/api/games/:id", function(req, res) {
     console.log(req.body);
     var realID = req.params.id;
+    console.log("Real ID: ");
+    console.log(realID);
     db.Game.update(
       {
         game_result: req.body.game_result
@@ -67,6 +69,30 @@ app.put("/api/games/:id", function(req, res) {
       res.json(response);
     });
   });
+
+  // This route is pulling the games from the database to later ensure duplciate games are not posted
+ 
+app.get("/api/games", function(req,res) {
+    db.Game.findAll().then(function(dbGames){
+        res.json(dbGames);
+    })
+})
+
+// ----------------------------------------
+
+app.put("/api/games", function(req, res) {
+console.log(req.body);
+db.Game.update({
+    game_result: req.body.game_result
+}, {
+    where: {
+    id: req.body.id
+    }
+}).then(function(response) {
+    res.json(response);
+});
+});
+                                            
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
