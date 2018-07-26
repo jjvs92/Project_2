@@ -30,6 +30,7 @@ app.post('/api/bets', function(req, res){
         game_id: req.body.game_id,
         user_pick: req.body.user_pick,
         bet_amount: req.body.bet_amount
+
     }).then(function(dbBets){
         res.json(dbBets);
     })
@@ -45,8 +46,21 @@ app.get("/api/bets", function(req, res){
 
 //------------------------------------
 
+
+// Route that will be used to  check if user has enough funds when attempting to place bet 
+
+app.get("/api/placing/bet/:id", function(req, res){
+  db.user.findOne({
+    where: {
+      id: req.params.id
+    }
+  }).then(function(dbUser){
+    res.json(dbUser);
+  })
+});
+
 app.post("/api/games", function(req, res) {
-    // console.log(req.body);
+    console.log(req.body);
     db.Game.create(req.body).then(function(response) {
       res.json(response);
     });
@@ -93,7 +107,6 @@ db.Game.update({
 });
 });
                                             
-
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
     return next();
