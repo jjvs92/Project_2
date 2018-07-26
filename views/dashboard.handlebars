@@ -240,6 +240,7 @@ $(document).ready(function() {
 
     var newBet = {
       user_id: {{userid}},
+      user_name: signedInUserName,
       game_id: userBetGameID,
       user_pick: teamBet,
       bet_amount: bet
@@ -268,6 +269,8 @@ $(document).ready(function() {
   } else{alert("you do not have enough");}
   });
 });
+
+
 
 findResults();
 showAction();

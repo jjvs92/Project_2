@@ -4,6 +4,9 @@ module.exports = function(sequelize, Sequelize) {
 		user_id: {
             type: Sequelize.INTEGER,
             allowNull: false},
+        user_name: {
+            type: Sequelize.STRING,
+            allowNull: false},
         game_id: {
             type: Sequelize.STRING,
             allowNull: false},
