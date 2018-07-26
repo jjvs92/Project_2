@@ -6,6 +6,10 @@ module.exports = function(app, passport) {
 
   app.get("/signin", authController.signin);
 
+  app.get("/", authController.signin);
+
+  app.get("*", isLoggedIn, authController.dashboard);
+
   app.post(
     "/signup",
     passport.authenticate("local-signup", {
