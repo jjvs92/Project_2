@@ -120,7 +120,7 @@ body {
   display: flex;
 }
 
-.teamImg {
+Img {
   max-width: 150px;
   max-height: 150px;
 }
@@ -136,14 +136,39 @@ body {
   padding-right: 0;
 }
 
-.leaderBoard {
-  text-align: center;
-  flex: 1;
+.leader {
+  color: #ff0000;
+  padding-bottom: 20px;
 }
 
-.leader {
-  color: ff0000;
+.leaderFlex {
+  display: inline-table;
+  width: 80%;
+  border: white 1px solid;
+  table-layout: fixed;
 }
+
+.leaderBoard {
+  text-align: center;
+}
+
+.leaderNum {
+  color: white;
+  text-align: center;
+  width: 10%;
+}
+
+.leaderName {
+  color: white;
+  text-align: center;
+}
+
+.leaderEarnings {
+  color: white;
+  text-align: center;
+}
+
+
 
 hr {
   border-color: #a9a9a9;
