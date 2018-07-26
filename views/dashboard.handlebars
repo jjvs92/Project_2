@@ -1,5 +1,9 @@
-<div class="container">
-  <div class="col-12 games"></div>
+{{> header}}
+<div class="dashboard">
+  <div class="col-6 games"></div>
+  <div class="col-6 leaderBoard">
+    <h1 class="leader">Leader Board</h1>
+  </div>
 </div>
 
 <script>
@@ -82,14 +86,9 @@
 
 
   // THis here is console logging  the ID of the user that is signed in... when wanting to reference the user we can use {{userid}}--- this is becuase it was passed in authcontroller.js
-
-  var userSignedInID = {{userid}};
   function showUserID(){
-    console.log(userSignedInID);
+    console.log({{userid}});
     console.log({{userWallet}});
-    //console.log({{userName}});
-    //console.log({{firstName}});
-
   }
   showUserID();
             
@@ -175,7 +174,7 @@ var showAction = function() {
             ${gameStatus} 
             </div><br>`
         );
-
+        console.log(homeTeam)
         $(".games").append(createDiv);
       }    
     }
@@ -183,6 +182,16 @@ var showAction = function() {
   findResults();
 };
   
+//Append image function
+function appendImg(imgSrc)
+  {
+      var audioElement = document.getElementById("playerSounds");
+      //Link sound file to element
+      audioElement.src = audioSrc;
+      //Set autoplay to true
+      audioElement.autoplay = true;
+  }
+
 $(document).ready(function() {
   console.log("ready");
 
@@ -191,16 +200,11 @@ $(document).ready(function() {
 
     console.log(this.getAttribute("data-teamname"));
   })
+
 })
 
 
 showAction();
-
-// THIS GET REQUEST WILL BE ADDED TO THE BET BUTTON TO ENSURE THE USER HAS ENOUGH FUNDS TO PLACE THE BET
-
-
-
-
 
 
 </script>
