@@ -32,31 +32,35 @@
               };
             };
 
-               /*function updateGames(games) {
-                $.ajax({
-                  method: "PUT",
-                  url: "/api/games",
-                  data: games
-                }).then(getGames);
-              }; 
-
+            function updateWinner() {
+              // event.preventDefault();
+              var id = [j];
+              var updatedWinner = winner;
+      
               var newResult = {
                 game_result: winner
               };
 
-              $.put("/api/games", newResult).then(function() {
-                console.log("New game added");
-                console.log(newResult);
-              });*/
+              $.ajax('/api/games/' + id, {
+                type: "PUT",
+                data: newResult 
+              }).then(
+                function() {
+                  console.log("Result added", newResult);
+                }
+              );
+            }
+            findWinner();
+            updateWinner();
 
-              if (homeScore > awayScore) {
-                winners.push(homeTeam);
-                losers.push(awayTeam);
-              } else {
-                winners.push(awayTeam);
-                losers.push(homeTeam);
-              }
-            };
+            if (homeScore > awayScore) {
+              winners.push(homeTeam);
+              losers.push(awayTeam);
+            } else {
+              winners.push(awayTeam);
+              losers.push(homeTeam);
+            }
+          };
             console.log("Winners:");
             console.log(winners);
             console.log("Losers:");
@@ -127,8 +131,6 @@ var showAction = function() {
           game_status: gameStatus
         };
 
-        $.get('/api/games', )
-
         $.post('/api/games', newGame).then(function() {
           console.log("New game added");
           console.log(newGame);
@@ -161,9 +163,23 @@ var showAction = function() {
 $(document).ready(function() {
   console.log("ready");
 
-  $(".bet-button").click(function(){
-    console.log("cool");
-    
+  $(".bet-button").on("click", function(){
+    console.log("cools");
+    //console.log($(this).text().trim());
+    var teamBet = $(this).text().trim();
+    var bet = prompt("How much would you like to bet on " + teamBet + "?");
+    console.log(teamBet, bet);
+
+    var newBet = {
+      user_id: {{userid}},
+      game_id: "game_id",
+      user_pick: teamBet,
+      bet_amount: bet
+    }
+    console.log(newBet);
+    $.post("/api/bets", newBet)
+      .then(function(data) {
+    });
   });
 });
 

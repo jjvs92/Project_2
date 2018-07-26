@@ -26,10 +26,10 @@ app.post('/signin', passport.authenticate('local-signin',  { successRedirect: '/
 
 app.post('/api/bets', function(req, res){
     db.Bet.create({
-        user_id: 2,
-        game_id: "testing",
-        user_pick: "Rangers",
-        bet_amount: 45
+        user_id: req.body.user_id,
+        game_id: req.body.game_id,
+        user_pick: req.body.user_pick,
+        bet_amount: req.body.bet_amount
     }).then(function(dbBets){
         res.json(dbBets);
     })
@@ -39,38 +39,39 @@ app.post('/api/bets', function(req, res){
 
 app.get("/api/bets", function(req, res){
     db.Bet.findAll().then(function(dbBets){
-        res.json(dbBets);
-    })
-})
+      res.json(dbBets);
+    });
+  });
 
 //------------------------------------
 
 app.post("/api/games", function(req, res) {
-console.log(req.body);
-db.Game.create(req.body).then(function(response) {
-    res.json(response);
-});
-});
+    console.log(req.body);
+    db.Game.create(req.body).then(function(response) {
+      res.json(response);
+    });
+  });
 
-app.put("/api/games", function(req, res) {
-console.log(req.body);
-db.Game.update({
-    game_result: req.body.game_result
-}, {
-    where: {
-    id: req.body.id
-    }
-}).then(function(response) {
-    res.json(response);
-});
-});
-                                            
+app.put("/api/games/:id", function(req, res) {
+    console.log(req.body);
+    var realID = req.params.id;
+    db.Game.update(
+      {
+        game_result: req.body.game_result
+      },
+      {
+        where: {
+          id: realID
+        }
+      }).then(function(response) {
+      res.json(response);
+    });
+  });
+
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
-        return next();
+    return next();
 
     res.redirect('/signin');
-}
-
-
+  }
 }
