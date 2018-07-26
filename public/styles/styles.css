@@ -117,12 +117,15 @@ body {
 
 .flex1 {
   margin: 0 5%;
+  margin: auto;
   display: inline-flex;
+  margin-bottom: 50px;
 }
 
 .flex2 {
   flex-direction: column;
   margin: 0 5%;
+  margin: auto;
 }
 
 .navElement {
@@ -141,9 +144,6 @@ body {
   margin-right: 20px;
 }
 /* Dashboard */
-.dashboard {
-  display: flex;
-}
 
 Img {
   max-width: 150px;
@@ -155,10 +155,13 @@ Img {
 }
 
 .games {
-  flex: 1;
-  height: 100vh;
-  overflow: auto;
-  padding-right: 0;
+  width: 80%;
+  margin: auto;
+  max-width: 100%;
+}
+
+.flexToggle {
+  flex-direction: column;
 }
 
 #scrollBar::-webkit-scrollbar-track
@@ -200,7 +203,10 @@ Img {
 }
 
 .leaderBoard {
+  margin: auto;
+  margin-top: 100px;
   text-align: center;
+  max-width: 100%
 }
 
 .leaderNum {
@@ -236,6 +242,15 @@ hr {
 
 .homeTeam {
   border-right: 2px solid #a9a9a9;
+  max-width: 100%;
+  border-bottom: 1px solid #a9a9a9;
+  flex: 0 0 35%;
+}
+
+.awayTeam {
+  max-width: 100%;
+  flex: 0 0 35%;
+  padding-top: 20px;
 }
 
 /* LeaderBoard */
@@ -248,4 +263,41 @@ table, th, td {
 th, td {
   padding: 5px;
   text-align: left
+}
+
+/* Media Queries */
+@media only screen and (min-width: 700px) {
+  .flexToggle {
+    flex-direction: row;
+  }
+
+  .homeTeam {
+    max-width: 50%;
+    flex: 1;
+    border-bottom: none;
+  }
+
+  .awayTeam {
+    max-width: 50%;
+    flex: 1;
+    padding-top: 0px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .dashboard {
+    display: flex;
+  }
+
+  .games {
+    max-width: 50%;
+    flex: 1;
+    height: 100vh;
+    overflow: auto;
+    padding-right: 0;
+  }
+
+  .leaderBoard {
+    margin-top: 0px;
+  }
 }
