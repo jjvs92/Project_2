@@ -7,6 +7,7 @@
 </div>
 
 <script>
+  var key = "fpqcanwygm37gnuaan27k6ud"
   var today = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
   var hour = moment().calendar();
 
@@ -19,7 +20,7 @@
       var winners = [];
       var losers = [];
       $.ajax({
-        url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/boxscore.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+        url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/boxscore.json?api_key=" + key,
         type: "GET",
         success: function(res) {
           console.log(res);
@@ -102,7 +103,7 @@ var postGames = function(gameData) {
 
   var getGames = function() {
     $.ajax({
-      url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+      url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=" + key,
       type: "GET",
       success: function(data) {
         // console.log(data.games.length);
@@ -126,7 +127,7 @@ var showAction = function() {
 
   $(".loginPrompt").empty();
   $.ajax({
-    url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/schedule.json?api_key=v9sa2vk6h75y3kmyj32mudj8",
+    url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/schedule.json?api_key=" + key,
     type: "GET",
     success: function(data) {
       console.log(data.date);
@@ -208,10 +209,6 @@ $(document).ready(function() {
   } else{alert("you do not have enough");}
   });
 });
-<<<<<<< HEAD
-
-=======
->>>>>>> 38cc52291121ffb0950926d91b14323046d34ee3
 
 findResults();
 showAction();
