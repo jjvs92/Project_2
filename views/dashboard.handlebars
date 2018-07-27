@@ -212,18 +212,21 @@ var showAction = function() {
 
         console.log(gameStatus)
         $(".games").append(createDiv);
-        if(gameStatus.trim() == 'CLOSED')
+        if(gameStatus === 'CLOSED')
         {
+          console.log("red");
           $(".status").css("color", "red");
         }
-        else if(gameStatus.trim() == 'INPROGRESS')
+        else if(gameStatus === 'INPROGRESS')
         {
+          console.log("green");
           $(".status").css("color", "green");
         }
-        else if(gameStatus.trim() == 'POSTPONED')
+        else if(gameStatus === 'POSTPONED')
         {
+          console.log("red");
           $(".status").css("color", "grey");
-        }
+        };
 
       }    
     }
@@ -280,7 +283,7 @@ $(document).ready(function() {
 });
 
 var showBets = function(){
-  $.get("/api/bets", function(data){
+  $.get("/api/bets/table", function(data){
     console.log(data);
     for(var i=0; i< data.length; i++){
       var user = data[i].user_name;
