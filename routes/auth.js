@@ -218,12 +218,12 @@ module.exports = function(app, passport) {
 
   // Route is switching boolean of bet paid to true
 
-  app.put("api/bets/:id", function(req, res){
+  app.put("/api/bets/table/:id", function(req, res){
     console.log("--------------");
     console.log(req.body);
     db.Bet.update(
       {
-        bet_paid: req.body.paid
+        bet_paid: true
       },
       {
         where: {
