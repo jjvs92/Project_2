@@ -1,29 +1,56 @@
+<div class="page-mask">
 {{> headerDashboard}}
-<div class="dashboard">
-  <div class="col-6 games" id="scrollBar"></div>
-  <div class="col-6 leaderBoard">
-    <h2 class="leader">Leader Board</h2>
-    <table class="leaderFlex">
-      <tr>
-        <th class="leaderNum">#</th>
-        <th class="leaderName">User</th>
-        <th class="leaderWinnings">Winnings</th>
-      </tr>
-    </table>
-    <h2 class="betsLive">Bets</h2>
-    <ol>
-      <div class="betsHistory" id="scrollBar"></div>
-    </ol>
+  <div class="dashboard">
+    {{!-- Games --}}
+    <div class="col-6 games" id="scrollBar"></div>
+    <div class="col-6 leaderBoard">
+      {{!-- Leader Board Table --}}
+      <h2 class="leader">Leader Board</h2>
+      <table class="leaderFlex">
+        <tr>
+          <th class="leaderNum">#</th>
+          <th class="leaderName">User</th>
+          <th class="leaderWinnings">Winnings</th>
+        </tr>
+      </table>
+      {{!-- Bets Log --}}
+      <h2 class="betsLive">Bets</h2>
+      <ol>
+        <div class="betsHistory" id="scrollBar"></div>
+      </ol>
 
+    </div>
   </div>
 </div>
+  <!-- Modal -->
+  <div class="modal1">
+    <div class="modalTitle">
+      <h4 class="modalHeader">
+        Place Bet
+      </h4>
+    </div>
+    <div class="modalBody">
+      <p class="modalContent">
+        How much would you like to bet on the <span class="placeBetTeam"></span>?
+      </p>
+      <input class="betInput" type="number" min="1" value="1" name="bet" required>
+    </div>
+    <div class="modalFlexRow">
+      <button class="btn btn-warning cancelModal">Cancel</button>
+      <button class="btn btn-success confirmModal">Confirm</button>
+    </div>
+     <div class="warning">
+      <p class="warningText"></p>
+    </div>
+  </div>
+
 
 <script>
 
   var key = "fpqcanwygm37gnuaan27k6ud"
   var today = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
   var hour = moment().calendar();
-
+  var teamBet = "";
   console.log(hour);
   
   var findResults = function() {
@@ -239,52 +266,61 @@ var showAction = function() {
 };
 
 $(document).ready(function() {  
-  console.log("ready");
-
   $("body").on("click", ".bet-button", function(){
-    console.log("cools");
-
-    
-
     //console.log($(this).text().trim());
-    var teamBet = $(this).text().trim();
-    var bet = prompt("How much would you like to bet on " + teamBet + "?");
+    teamBet = $(this).text().trim();
+    //Show modal
+    showModal(teamBet);
+    //Clear Warning Text
+    $(".warningText").text("")
+    //Grabbing modal to set max value of scroll to signedInWallet
+    var betInputMax = $('.betInput');
+    betInputMax.attr("max", signedInWallet)
+    //var bet = prompt("How much would you like to bet on " + teamBet + "?");
+    var bet = $(".betInput").val();
     console.log(teamBet, parseInt(bet));
     var userBetGameID = this.getAttribute("data-gameID");
-    
-    if(parseInt(bet) < signedInWallet){
-
-    var newBet = {
-      user_id: {{userid}},
-      user_name: signedInUserName,
-      game_id: userBetGameID,
-      user_pick: teamBet,
-      bet_amount: bet
-    }
-    console.log(newBet);
-
-    $.post("/api/bets", newBet)
-      .then(function(data) {
-    });
-
-    signedInWallet = signedInWallet - parseInt(bet);
-
-    console.log(signedInWallet);
-    var newWallet = {
-        new_wallet: signedInWallet
-    }
-
-    $.ajax("/api/user/wallet/" + signedInUser, {
-      type: "PUT",
-      data: newWallet
-    }).then(
-      function(){
-        console.log("Wallet Updated " + signedInWallet);
+    //Click function to confirm modal
+    $("body").on("click", ".confirmModal", function(e)
+    {
+      e.preventDefault();
+      var bet = $(".betInput").val();
+      console.log(bet);
+      if(parseInt(bet) < parseInt(signedInWallet)){
+        hideModel();
+      var newBet = {
+        user_id: {{userid}},
+        user_name: signedInUserName,
+        game_id: userBetGameID,
+        user_pick: teamBet,
+        bet_amount: bet
       }
-    )
+      console.log("New bet: " + newBet);
 
-  } else{alert("you do not have enough");}
+      $.post("/api/bets", newBet)
+        .then(function(data) {
+      });
 
+      signedInWallet = signedInWallet - parseInt(bet);
+
+      console.log(signedInWallet);
+      var newWallet = {
+          new_wallet: signedInWallet
+      }
+
+      $.ajax("/api/user/wallet/" + signedInUser, {
+        type: "PUT",
+        data: newWallet
+      }).then(
+        function(){
+          console.log("Wallet Updated " + signedInWallet);
+        }
+      )
+
+    } else{$(".warningText").text("Max bet available\: " + signedInWallet)
+      
+    }
+    })
 });
 
 var showBets = function(){
@@ -369,10 +405,26 @@ var payWinner = function(){
       }
     }
   })
-}       
+}    
 
+var hideModel = function(){
+  $(".modal1").hide();
+  $(".page-mask").removeClass("active");
+}
+
+var showModal = function(team){
+  $(".modal1").show();
+  $(".page-mask").addClass("active");
+  $(".placeBetTeam").text(team)
+  //Click cancel to close modal
+  $("body").on("click", ".cancelModal", function(){
+    hideModel();
+  });
+}
+
+hideModel();
 payWinner();
-showLeader()
+showLeader();
 showBets();
  });
 
