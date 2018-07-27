@@ -203,7 +203,9 @@ var showAction = function() {
             <hr>
             <div class='row'>          
               <div class='card-footer status'>GAME STATUS:
-              ${gameStatus}
+                <span class='statusColor'>
+                ${gameStatus}
+                </span>
               </div>
             </div>
           </div>
@@ -215,19 +217,20 @@ var showAction = function() {
         $(".games").append(createDiv);
         if(gameStatus === 'CLOSED')
         {
-          console.log("red");
           $(".status").css("color", "red");
         }
         else if(gameStatus === 'INPROGRESS')
         {
-          console.log("green");
-          $(".status").css("color", "green");
+          $(".statusColor").css("color", "orange");
         }
         else if(gameStatus === 'POSTPONED')
         {
-          console.log("red");
-          $(".status").css("color", "grey");
-        };
+          $(".statusColor").css("color", "grey");
+        }
+        else if(gameStatus === 'SCHEDULED')
+        {
+          $(".statusColor").css("color", "green");
+        }
 
       }    
     }
