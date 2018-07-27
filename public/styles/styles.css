@@ -13,7 +13,9 @@ body {
 }
 
 .betsHistory{
-  color:white;
+  background: #a9a9a9;
+  color:#000000;
+  font-weight: bolder;
 }
 @font-face {
   font-family: logoFont;
@@ -100,6 +102,16 @@ body {
   margin-bottom: 100px;
   background-color: #000000;
   border-bottom: 2px #f5f5f5 solid;
+}
+.logout {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  color: #ff0000;
+}
+.logout:hover {
+  text-decoration: none;
+  color: #b31313;
 }
 .flex1 {
   margin: 0 5%;
@@ -202,18 +214,23 @@ Img {
   max-width: 100%
 }
 .leaderNum {
-  color: #ffffff;
+  font-weight: bolder;
+  color: #000000;
   text-align: center;
   width: 10%;
+  background: #dcdcdc;
 }
 .leaderName {
-  color: #ffffff;
+  font-weight: bolder;
+  color: #000000;
   text-align: center;
+  background: #dcdcdc;
 }
 .leaderWinnings {
-  color: #ffffff;
+  font-weight: bolder;
+  color: #000000;
   text-align: center;
-  padding: 
+  background: #dcdcdc;
 }
 /* Bets Log */
 .betsHistory {
@@ -244,6 +261,8 @@ Img {
 }
 .betHr {
   margin-right: 1em;
+  border-color: #7e7e7e;
+  border-width: 2px;
 }
 .logTime {
   font-size: .6em;
@@ -271,7 +290,7 @@ hr {
 }
 /* LeaderBoard */
 table, th, td {
-  border: 1px solid #ffffff;
+  border: 2px solid #a9a9a9;
   border-collapse: collapse;
 }
 th, td {
