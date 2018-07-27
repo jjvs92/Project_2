@@ -18,12 +18,13 @@
 </div>
 
 <script>
+
   var key = "fpqcanwygm37gnuaan27k6ud"
   var today = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
   var hour = moment().calendar();
 
   console.log(hour);
-  
+$(document).ready(function() {  
   var findResults = function() {
 
   setTimeout(
@@ -230,7 +231,7 @@ var showAction = function() {
   postGames();
 };
 
-$(document).ready(function() {
+
   console.log("ready");
 
   $(".bet-button").on("click", function(){
@@ -276,7 +277,7 @@ $(document).ready(function() {
 
   } else{alert("you do not have enough");}
   });
-});
+
 
 var showBets = function(){
   $.get("/api/bets", function(data){
@@ -296,6 +297,7 @@ var showBets = function(){
 findResults();
 showAction();
 //showBets();
+});
 
 
 </script>
