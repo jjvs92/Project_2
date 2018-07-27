@@ -10,6 +10,7 @@
         <th class="leaderWinnings">Winnings</th>
       </tr>
     </table>
+    <h2 class="betsLive">Live Bets</h2>
     <ol>
       <div class="betsHistory"></div>
     </ol>
@@ -292,13 +293,30 @@ var showBets = function(){
       var user = data[i].user_name;
       var bet = data[i].bet_amount;
       var team = data[i].user_pick;
-      var newBetLine = "<li>" + user + " bet " + bet + " on " + team + "</li>";
+      var newBetLine = "<li class='betLog'><span class='logTime'>" + "INSERT SEQUALIZE TIME HERE" + "</span>" + " " + user + " bet " + bet + " on " + team + "." + "</li>";
       $(".betsHistory").append(newBetLine);
     };
     
   });
 }
 
+var showLeader = function(){
+  $.get("/api/users", function(data){
+    console.log("IMPORTANT" + data[0]);
+    for(var i = 0; i < 9; i++) {
+      var leaderTableRow = $("<tr>");
+      var rank = i + 1;
+      var user = data[i].username;
+      var wallet = data[i].wallet;
+      var tdRank = $('<td class="leaderNum">').text(rank);     
+      var tdUser = $('<td class="leaderName">').text(user);
+      var tdWallet = $('<td class="leaderWinnings">').text(wallet);
+      leaderTableRow.append(tdRank, tdUser, tdWallet)
+      $('.leaderFlex').append(leaderTableRow);
+    }
+  })
+}
+showLeader()
 showBets();
  });
 
