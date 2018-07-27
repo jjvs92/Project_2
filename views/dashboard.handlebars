@@ -283,7 +283,7 @@ $(document).ready(function() {
 });
 
 var showBets = function(){
-  $.get("/api/bets", function(data){
+  $.get("/api/bets/table", function(data){
     console.log(data);
     for(var i=0; i< data.length; i++){
       var user = data[i].user_name;
@@ -295,12 +295,14 @@ var showBets = function(){
     
   });
 }
+
+showBets();
  });
 
 
 findResults();
 showAction();
-//showBets();
+
 
  
 </script>
