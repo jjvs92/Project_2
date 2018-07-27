@@ -24,7 +24,7 @@
   var hour = moment().calendar();
 
   console.log(hour);
-$(document).ready(function() {  
+  
   var findResults = function() {
 
   setTimeout(
@@ -231,10 +231,10 @@ var showAction = function() {
   postGames();
 };
 
-
+$(document).ready(function() {  
   console.log("ready");
 
-  $(".bet-button").on("click", function(){
+  $("body").on("click", ".bet-button", function(){
     console.log("cools");
 
     
@@ -276,8 +276,8 @@ var showAction = function() {
     )
 
   } else{alert("you do not have enough");}
-  });
 
+});
 
 var showBets = function(){
   $.get("/api/bets", function(data){
@@ -292,12 +292,12 @@ var showBets = function(){
     
   });
 }
+ });
 
 
 findResults();
 showAction();
 //showBets();
-});
 
-
+ 
 </script>
