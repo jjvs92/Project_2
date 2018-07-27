@@ -94,7 +94,7 @@ module.exports = function(passport, user) {
           .catch(function(err) {
             console.log("Error:", err);
             return done(null, false, {
-              message: "Something went wrong with your Signin" 
+              message: "Something went wrong with your Signin"
             });
           });
       }
