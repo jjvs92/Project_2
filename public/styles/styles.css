@@ -235,7 +235,7 @@ table, th, td {
   border-collapse: collapse;
 }
 th, td {
-  padding: 5px;
+  padding: 1em;
   text-align: left
 }
 /* Media Queries */
