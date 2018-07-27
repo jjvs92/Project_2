@@ -211,41 +211,36 @@ var showAction = function() {
 
         console.log(gameStatus)
         $(".games").append(createDiv);
-        if(gameStatus == 'CLOSED')
+        if(gameStatus.trim() == 'CLOSED')
         {
           $(".status").css("color", "red");
         }
-        else if(gameStatus == 'INPROGRESS')
+        else if(gameStatus.trim() == 'INPROGRESS')
         {
           $(".status").css("color", "green");
         }
-        else if(gameStatus == 'POSTPONED')
+        else if(gameStatus.trim() == 'POSTPONED')
         {
           $(".status").css("color", "grey");
         }
-
       }    
     }
   });
   postGames();
 };
 
-$(document).ready(function() {
+$(document).ready(function() {  
   console.log("ready");
 
-  $(".bet-button").on("click", function(){
+  $("body").on("click", ".bet-button", function(){
     console.log("cools");
-
-    
-
     //console.log($(this).text().trim());
     var teamBet = $(this).text().trim();
     var bet = prompt("How much would you like to bet on " + teamBet + "?");
     console.log(teamBet, parseInt(bet));
     var userBetGameID = this.getAttribute("data-gameID");
     
-    if(parseInt(bet) < signedInWallet){
-
+    if (parseInt(bet) < signedInWallet) {
     var newBet = {
       user_id: {{userid}},
       user_name: signedInUserName,
@@ -254,17 +249,16 @@ $(document).ready(function() {
       bet_amount: bet
     }
     console.log(newBet);
+
     $.post("/api/bets", newBet)
       .then(function(data) {
     });
 
     signedInWallet = signedInWallet - parseInt(bet);
-
     console.log(signedInWallet);
     var newWallet = {
         new_wallet: signedInWallet
     }
-
     $.ajax("/api/user/wallet/" + signedInUser, {
       type: "PUT",
       data: newWallet
@@ -273,9 +267,7 @@ $(document).ready(function() {
         console.log("Wallet Updated " + signedInWallet);
       }
     )
-
   } else{alert("you do not have enough");}
-  });
 });
 
 var showBets = function(){
@@ -291,11 +283,7 @@ var showBets = function(){
     
   });
 }
-
-
 findResults();
 showAction();
 //showBets();
-
-
 </script>
