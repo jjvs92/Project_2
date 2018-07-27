@@ -18,84 +18,76 @@
 </div>
 
 <script>
-
   var key = "fpqcanwygm37gnuaan27k6ud"
   var today = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
   var hour = moment().calendar();
-
   console.log(hour);
-$(document).ready(function() {  
+
   var findResults = function() {
+    setTimeout(
+      function() {
+        var winners = [];
+        var losers = [];
+        $.ajax({
+          url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/boxscore.json?api_key=" + key,
+          type: "GET",
+          success: function(res) {
+            console.log(res);
+            for (var j = 0; j < res.league.games.length; j++) {
+              var thisGame = res.league.games[j];
+              var homeCity = thisGame.game.home.market;
+              var awayCity = thisGame.game.away.market;
+              var homeTeam = thisGame.game.home.name;
+              var awayTeam = thisGame.game.away.name;
+              var homeScore = thisGame.game.home.runs;
+              var awayScore = thisGame.game.away.runs;
+              var gameStatus = thisGame.game.status;
+              var winner;
 
-  setTimeout(
-    function() {
-      var winners = [];
-      var losers = [];
-      $.ajax({
-        url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/boxscore.json?api_key=" + key,
-        type: "GET",
-        success: function(res) {
-          console.log(res);
-          for (var j = 0; j < res.league.games.length; j++) {
-            var thisGame = res.league.games[j];
-            var homeCity = thisGame.game.home.market;
-            var awayCity = thisGame.game.away.market;
-            var homeTeam = thisGame.game.home.name;
-            var awayTeam = thisGame.game.away.name;
-            var homeScore = thisGame.game.home.runs;
-            var awayScore = thisGame.game.away.runs;
-            var gameStatus = thisGame.game.status;
-            var winner;
+              var findWinner = function() {
+                if (homeScore > awayScore) {
+                  winner = homeCity + " " + homeTeam
+                } else {
+                  winner = awayCity + " " + awayTeam
+                };
+              };
 
-            var findWinner = function() {
-              if (homeScore > awayScore) {
-                winner = homeCity + " " + homeTeam
+              function updateWinner() {
+                // event.preventDefault();
+                var id = (JSON.parse([j]) + 1);
+                var updatedWinner = winner;
+                var newResult = {
+                  game_result: winner
+                };
+                $.ajax('/api/games/' + id, {
+                  type: "PUT",
+                  data: newResult 
+                }).then(
+                  function() {
+                    console.log("Result added", newResult);
+                  }
+                );
+              }
+
+              if (gameStatus === "closed") {
+                console.log("this game is over");
+                findWinner();
+                updateWinner();
               } else {
-                winner = awayCity + " " + awayTeam
-              };
-            };
-
-            function updateWinner() {
-              // event.preventDefault();
-              var id = (JSON.parse([j]) + 1);
-              var updatedWinner = winner;
-      
-              var newResult = {
-                game_result: winner
+                console.log("this game is NOT over");
               };
 
-              $.ajax('/api/games/' + id, {
-                type: "PUT",
-                data: newResult 
-              }).then(
-                function() {
-                  console.log("Result added", newResult);
-                }
-              );
+              if (homeScore > awayScore) {
+                winners.push(homeTeam);
+                losers.push(awayTeam);
+              } else {
+                winners.push(awayTeam);
+                losers.push(homeTeam);
+              }
+              };
             }
-
-            if (gameStatus === "closed") {
-              console.log("this game is over");
-              findWinner();
-              updateWinner();
-            } else {
-              console.log("this game is NOT over");
-            };
-
-            if (homeScore > awayScore) {
-              winners.push(homeTeam);
-              losers.push(awayTeam);
-            } else {
-              winners.push(awayTeam);
-              losers.push(homeTeam);
-            }
-            };
-            
-          }
-        });
+          });
       }, 1500);
-      
-};
   // THis here is console logging  the ID of the user that is signed in... when wanting to reference the user we can use {{userid}}--- this is becuase it was passed in authcontroller.js
 
   var signedInUser = {{userid}};
@@ -110,9 +102,9 @@ $(document).ready(function() {
             
   //-------------------------------------------------
 
-var postGames = function(gameData) {
-    $.post("/api/games", gameData)
-    .then(getGames);
+  var postGames = function(gameData) {
+      $.post("/api/games", gameData)
+      .then(getGames);
   };
 
   var getGames = function() {
@@ -134,111 +126,106 @@ var postGames = function(gameData) {
     });
   };
 
-var showAction = function() {
-  var homeTeams = [];
-  var awayTeams = [];
-  var createDiv = $("<div class='card text-center'></div>");
-  var createImg = $("<img>")
+  var showAction = function() {
+    var homeTeams = [];
+    var awayTeams = [];
+    var createDiv = $("<div class='card text-center'></div>");
+    var createImg = $("<img>")
 
-  $(".loginPrompt").empty();
-  $.ajax({
-    url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/schedule.json?api_key=" + key,
-    type: "GET",
-    success: function(data) {
-      console.log(data.date);
+    $(".loginPrompt").empty();
+    $.ajax({
+      url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/schedule.json?api_key=" + key,
+      type: "GET",
+      success: function(data) {
+        console.log(data.date);
 
-      //console.log(data.games.length);
-      // console.log(data.games.length);
-      for (var i = 0; i < data.games.length; i++) {
-        var gameNum = [i + 1];
-        var homeCity = data.games[i].home.market;
-        var awayCity = data.games[i].away.market;
-        var awayTeam = data.games[i].away.name;
-        var homeTeam = data.games[i].home.name;
-        var status = data.games[i].status;
-        var gameStatus = status.toUpperCase();
-        var gameDate = data.date
-        var gameID = data.games[i].id
+        //console.log(data.games.length);
+        // console.log(data.games.length);
+        for (var i = 0; i < data.games.length; i++) {
+          var gameNum = [i + 1];
+          var homeCity = data.games[i].home.market;
+          var awayCity = data.games[i].away.market;
+          var awayTeam = data.games[i].away.name;
+          var homeTeam = data.games[i].home.name;
+          var status = data.games[i].status;
+          var gameStatus = status.toUpperCase();
+          var gameDate = data.date
+          var gameID = data.games[i].id
 
-        var newGame = {
+          var newGame = {
 
-          home_team: homeCity + " " + homeTeam,
-          away_team: awayCity + " " + awayTeam,
-          game_status: gameStatus,
-          game_id: gameID,
-          game_date: gameDate
-        };
+            home_team: homeCity + " " + homeTeam,
+            away_team: awayCity + " " + awayTeam,
+            game_status: gameStatus,
+            game_id: gameID,
+            game_date: gameDate
+          };
 
-        $.post('/api/games', newGame).then(function() {
-          console.log("New game added");
-        });
+          $.post('/api/games', newGame).then(function() {
+            console.log("New game added");
+          });
 
 
-        homeTeams.push(homeTeam);
-        awayTeams.push(awayTeam);
+          homeTeams.push(homeTeam);
+          awayTeams.push(awayTeam);
 
-        createDiv.append(
-          `<div class='card-header'>GAME #${gameNum}
-            <br>
-            <span class="homeTeamHeader">@${homeCity}</span>
-          </div>
-          <div class='card-body'>
-            <div class='row flexToggle'>
-              <div class='col-6 homeTeam'>
-                <img class="teamImg" src="./images/${homeTeam}.png" alt="${homeTeam}">
-                <br>
-                <button type='button' data-gameID= ${gameID} data-teamName = ${homeCity + " " + homeTeam} class='btn btn-success bet-button'>
-                  ${homeCity + " " + homeTeam}
-                </button>
+          createDiv.append(
+            `<div class='card-header'>GAME #${gameNum}
+              <br>
+              <span class="homeTeamHeader">@${homeCity}</span>
+            </div>
+            <div class='card-body'>
+              <div class='row flexToggle'>
+                <div class='col-6 homeTeam'>
+                  <img class="teamImg" src="./images/${homeTeam}.png" alt="${homeTeam}">
+                  <br>
+                  <button type='button' data-gameID= ${gameID} data-teamName = ${homeCity + " " + homeTeam} class='btn btn-success bet-button'>
+                    ${homeCity + " " + homeTeam}
+                  </button>
+                </div>
+                <div class='col-6 awayTeam'>
+                  <img src="./images/${awayTeam}.png" alt="${awayTeam}">
+                  <br>
+                  <button type='button' data-gameID= ${gameID} data-teamName = ${awayCity + " " + awayTeam} class='btn btn-success bet-button'>
+                    ${awayCity + " " + awayTeam}
+                  </button>
+                </div>
               </div>
-              <div class='col-6 awayTeam'>
-                <img src="./images/${awayTeam}.png" alt="${awayTeam}">
-                <br>
-                <button type='button' data-gameID= ${gameID} data-teamName = ${awayCity + " " + awayTeam} class='btn btn-success bet-button'>
-                  ${awayCity + " " + awayTeam}
-                </button>
+              <hr>
+              <div class='row'>          
+                <div class='card-footer status'>GAME STATUS:
+                ${gameStatus}
+                </div>
               </div>
             </div>
-            <hr>
-            <div class='row'>          
-              <div class='card-footer status'>GAME STATUS:
-              ${gameStatus}
-              </div>
-            </div>
-          </div>
-            `
-        );
-           //<img src="./images/Yankees.png" alt="Yankees">
+              `
+          );
+            //<img src="./images/Yankees.png" alt="Yankees">
 
-        console.log(gameStatus)
-        $(".games").append(createDiv);
-        if(gameStatus == 'CLOSED')
-        {
-          $(".status").css("color", "red");
-        }
-        else if(gameStatus == 'INPROGRESS')
-        {
-          $(".status").css("color", "green");
-        }
-        else if(gameStatus == 'POSTPONED')
-        {
-          $(".status").css("color", "grey");
-        }
+          console.log(gameStatus)
+          $(".games").append(createDiv);
+          if(gameStatus == 'CLOSED')
+          {
+            $(".status").css("color", "red");
+          }
+          else if(gameStatus == 'INPROGRESS')
+          {
+            $(".status").css("color", "green");
+          }
+          else if(gameStatus == 'POSTPONED')
+          {
+            $(".status").css("color", "grey");
+          }
 
-      }    
-    }
-  });
-  postGames();
-};
-
-
+        }    
+      }
+    });
+    postGames();
+  };
   console.log("ready");
 
   $(".bet-button").on("click", function(){
     console.log("cools");
-
-    
-
     //console.log($(this).text().trim());
     var teamBet = $(this).text().trim();
     var bet = prompt("How much would you like to bet on " + teamBet + "?");
@@ -269,35 +256,31 @@ var showAction = function() {
     $.ajax("/api/user/wallet/" + signedInUser, {
       type: "PUT",
       data: newWallet
-    }).then(
-      function(){
-        console.log("Wallet Updated " + signedInWallet);
-      }
-    )
-
-  } else{alert("you do not have enough");}
+    })
+      .then(
+        function(){
+          console.log("Wallet Updated " + signedInWallet);
+        }
+      )
+    } else {
+      alert("you do not have enough");}
   });
 
-
-var showBets = function(){
-  $.get("/api/bets", function(data){
-    console.log(data);
-    for(var i=0; i< data.length; i++){
-      var user = data[i].user_name;
-      var bet = data[i].bet_amount;
-      var team = data[i].user_pick;
-      var newBetLine = "<li>" + user + " bet " + bet + " on " + team + "</li>";
-      $(".betsHistory").append(newBetLine);
-    };
-    
+  var showBets = function(){
+    $.get("/api/bets", function(data){
+      console.log(data);
+      for(var i=0; i< data.length; i++){
+        var user = data[i].user_name;
+        var bet = data[i].bet_amount;
+        var team = data[i].user_pick;
+        var newBetLine = "<li>" + user + " bet " + bet + " on " + team + "</li>";
+        $(".betsHistory").append(newBetLine);
+      };
+      
+    });
+  }
+  findResults();
+  showAction();
+  //showBets();
   });
-}
-
-
-findResults();
-showAction();
-//showBets();
-});
-
-
 </script>
