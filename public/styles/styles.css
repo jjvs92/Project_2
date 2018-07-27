@@ -28,8 +28,9 @@ body {
   display: flex;
 }
 
-.container .signIn {
+.signIn {
   justify-content: center;
+  margin-top: -100px;
 }
 
 .box {
@@ -53,7 +54,7 @@ body {
 
 .inputs {
   width: 100%;
-  line-height: 15px;
+  line-height: 1.5em;
   padding: 5px;
 }
 
