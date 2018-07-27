@@ -44,10 +44,62 @@ module.exports = function(app, passport) {
 
   // This Route will show all bets
 
-  app.get("/api/bets", function(req, res) {
-    db.Bet.findAll().then(function(dbBets) {
-      res.json(dbBets);
-    });
+  // app.get("/api/bets", function(req, res) {
+  //   db.Bet.findAll().then(function(dbBets) {
+  //     res.json(dbBets);
+  //   });
+  // });
+
+  app.get("/api/bets", (req, res) => {
+      db.users.findAll({
+          include: [
+              {
+                  model: db.users,
+                  include: [
+                      {
+                          model: db.bets
+                      }
+                  ]
+              }
+          ]
+      }).then(users => {
+          var resObj = users.map(user => {
+              return Object.assign(
+                  {},
+                  {
+                      user_id: user.id,
+                      user_wallet: user.wallet,
+                      user_status: user.status,
+                      bets: user.bets.map(bet => {
+
+                        return Object.assign(
+                            {},
+                            {
+                                bet_id: bet.id,
+                                bet_game: bet.game_id,
+                                bet_pick: bet.user_pick,
+                                bet_amount: bet.bet_amount,
+                                games: bet.games.map(game => {
+
+                                    return Object.assign(
+                                        {},
+                                        {
+                                            game_id: game.id,
+                                            game_status: game.game_status,
+                                            game_result: game.game_result,
+                                            game_date: game.game_date
+                                        }
+                                    )
+                                })
+                            }
+                        )
+                      })
+                  }
+              )
+          });
+          console.log("WOWOWOWOWOWOWOWOW");
+          res.json(resObj);
+      });
   });
 
   //------------------------------------
