@@ -212,18 +212,21 @@ var showAction = function() {
 
         console.log(gameStatus)
         $(".games").append(createDiv);
-        if(gameStatus.trim() == 'CLOSED')
+        if(gameStatus === 'CLOSED')
         {
+          console.log("red");
           $(".status").css("color", "red");
         }
-        else if(gameStatus.trim() == 'INPROGRESS')
+        else if(gameStatus === 'INPROGRESS')
         {
+          console.log("green");
           $(".status").css("color", "green");
         }
-        else if(gameStatus.trim() == 'POSTPONED')
+        else if(gameStatus === 'POSTPONED')
         {
+          console.log("red");
           $(".status").css("color", "grey");
-        }
+        };
 
       }    
     }

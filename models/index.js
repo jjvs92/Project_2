@@ -29,4 +29,13 @@ Object.keys(db).forEach(function(modelName) {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.users = require('../models/users.js')(sequelize, Sequelize);
+db.bets = require('../models/bets.js')(sequelize, Sequelize);
+db.games = require('../models/games.js')(sequelize, Sequelize);
+
+db.bets.belongsTo(db.users);
+db.users.hasMany(db.bets);
+db.games.belongsTo(db.bets);
+db.bets.hasOne(db.games);
+
 module.exports = db;
