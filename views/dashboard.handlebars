@@ -297,7 +297,7 @@ var showBets = function(){
       console.log(typeof dateNtime);
       var betDate= dateNtime.substring(0,10);
       var betTime= dateNtime.substring(11, 19);
-      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betTime + "</span>" + " " + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
+      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betTime + "</span>" + "<br>" + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
       $(".betsHistory").prepend(newBetLine);
     };
     
