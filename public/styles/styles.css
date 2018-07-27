@@ -11,6 +11,10 @@ body {
   font-family: sportsCenter;
   letter-spacing: .1em;
 }
+
+.betsHistory{
+  color:white;
+}
 @font-face {
   font-family: logoFont;
   src: url(../fonts/Brannboll.ttf)

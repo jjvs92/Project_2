@@ -8,8 +8,6 @@ module.exports = function(app, passport) {
 
   app.get("/", authController.signin);
 
-  app.get("*", isLoggedIn, authController.dashboard);
-
   app.post(
     "/signup",
     passport.authenticate("local-signup", {
@@ -30,6 +28,19 @@ module.exports = function(app, passport) {
     })
   );
 
+  // This route will get all users so we can compare who has the most money and show on leaderboard
+
+  app.get("/api/users", function(req, res){
+    db.user.findAll({
+      attributes:["username", "wallet"],
+      order: [["wallet", "DESC"]]
+      }
+    ).then(function(dbUsers){
+      res.json(dbUsers);
+    })
+  });
+// -----------------------------------------------------
+// This route will post the user's bet to Bets table
   app.post("/api/bets", function(req, res) {
     db.Bet.create({
       user_id: req.body.user_id,
@@ -41,6 +52,8 @@ module.exports = function(app, passport) {
       res.json(dbBets);
     });
   });
+
+  //--------------------------------------------
 
   // This Route will show all bets
 
@@ -140,6 +153,8 @@ module.exports = function(app, passport) {
       res.json(response);
     });
   });
+
+  app.get("*", isLoggedIn, authController.dashboard);
   function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
       return next();
