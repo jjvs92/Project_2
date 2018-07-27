@@ -211,15 +211,15 @@ var showAction = function() {
 
         console.log(gameStatus)
         $(".games").append(createDiv);
-        if(gameStatus == 'CLOSED')
+        if(gameStatus.trim() == 'CLOSED')
         {
           $(".status").css("color", "red");
         }
-        else if(gameStatus == 'INPROGRESS')
+        else if(gameStatus.trim() == 'INPROGRESS')
         {
           $(".status").css("color", "green");
         }
-        else if(gameStatus == 'POSTPONED')
+        else if(gameStatus.trim() == 'POSTPONED')
         {
           $(".status").css("color", "grey");
         }
@@ -228,7 +228,8 @@ var showAction = function() {
   });
   postGames();
 };
-$(document).ready(function() {
+
+$(document).ready(function() {  
   console.log("ready");
 
   $("body").on("click", ".bet-button", function(){
@@ -267,7 +268,6 @@ $(document).ready(function() {
       }
     )
   } else{alert("you do not have enough");}
-  });
 });
 
 var showBets = function(){
