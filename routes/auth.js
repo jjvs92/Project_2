@@ -30,7 +30,7 @@ module.exports = function(app, passport) {
 
   // This route will get all users so we can compare who has the most money and show on leaderboard
 
-  app.get("/api/users", function(req, res){
+  app.get("/api/users/ranking", function(req, res){
     db.user.findAll({
       attributes:["username", "wallet"],
       order: [["wallet", "DESC"]]

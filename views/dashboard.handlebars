@@ -56,6 +56,9 @@
               };
             };
 
+            function checkBets(){
+              
+            }
             function updateWinner() {
               // event.preventDefault();
               var id = (JSON.parse([j]) + 1);
@@ -290,7 +293,11 @@ var showBets = function(){
       var user = data[i].user_name;
       var bet = data[i].bet_amount;
       var team = data[i].user_pick;
-      var newBetLine = "<li class='betLog'><span class='logTime'>" + "INSERT SEQUALIZE TIME HERE" + "</span>" + " " + user + " bet " + bet + " on " + team + "." + "</li>";
+      var dateNtime = data[i].createdAt;
+      console.log(typeof dateNtime);
+      var betDate= dateNtime.substring(0,10);
+      var betTime= dateNtime.substring(11, 19);
+      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betTime + "</span>" + " " + user + " bet " + bet + " on " + team + "." + "</li>";
       $(".betsHistory").append(newBetLine);
     };
     
@@ -298,7 +305,7 @@ var showBets = function(){
 }
 
 var showLeader = function(){
-  $.get("/api/users", function(data){
+  $.get("/api/users/ranking", function(data){
     console.log("IMPORTANT" + data[0]);
     for(var i = 0; i < 9; i++) {
       var leaderTableRow = $("<tr>");
