@@ -11,12 +11,6 @@ body {
   font-family: sportsCenter;
   letter-spacing: .1em;
 }
-
-.betsHistory{
-  background: #a9a9a9;
-  color:#000000;
-  font-weight: bolder;
-}
 @font-face {
   font-family: logoFont;
   src: url(../fonts/Brannboll.ttf)
@@ -153,6 +147,71 @@ body {
   margin: auto;
   transform: translateX(100px);
 }
+/* Modals */
+.modal1 {
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* width: 25%; */
+  /* height: 55%; */
+  background-color: #dcdcdc;
+  border: #ffffff 1px solid;
+  color: #000000;
+}
+.modalHeader {
+  color: #ff0000;
+  padding: 20px;
+  background-color: #131317;
+  text-align: center;
+  border-bottom: #ffffff 1px solid;
+}
+.modalContent {
+  text-align: center;
+  width: 80%;
+  margin: auto;
+  margin-top: 10%;
+  font-weight: bolder;
+  font-size: 1.3em;
+}
+.modalFlexRow {
+  margin: 2em 0 2em 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.betInput {
+  border: 1px #000000 solid;
+  display: block;
+  margin: 2em auto 0 auto;
+  padding: 3px;
+  width: 100px;
+}
+.betInput:focus {
+  border: 1px #000000 solid;
+  outline-width: 0;
+}
+.cancelModal {
+  margin-top: 0
+}
+.confirmModal {
+  margin-top: 0;
+}
+.page-mask.active {
+  background: rgb(0, 0, 0);
+  opacity: 0.2;
+  filter: Alpha(Opacity=50);
+}
+.warningText {
+  font-size: .8em;
+  font-weight: bolder;
+  margin-bottom: 2em;
+  text-align: center;
+  color: rgb(255, 0, 0, .8);
+}
 /* Dashboard */
 Img {
   max-width: 150px;
@@ -234,6 +293,9 @@ Img {
 }
 /* Bets Log */
 .betsHistory {
+  background: #dcdcdc;
+  color:#000000;
+  font-weight: bolder;
   border: solid #ffffff 1px;
   width: 80%;
   display: inline-block;
@@ -255,7 +317,7 @@ Img {
   margin-bottom: 0;
   width: 80%;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 95px;
   border: 1px solid #ffffff;
   border-bottom: none;
 }
