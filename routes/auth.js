@@ -63,6 +63,25 @@ module.exports = function(app, passport) {
      });
   });
 
+  // ---------------
+
+  // This route is used to pull all games 
+
+  app.get("/api/games/winner", function(req, res){
+    db.Bet.findAll().then(function(dbBets){
+      res.json(dbBets);
+    })
+  })
+
+  //------------
+
+  // This route will update bets table with winner information 
+  app.put("api/games/winner/:id", function(req, res){
+    console.log(req.body);
+
+  });
+
+  //---------
   app.get("/api/bets", (req, res) => {
       db.users.findAll({
           include: [
@@ -156,6 +175,20 @@ module.exports = function(app, passport) {
 
   // ----------------------------------------------------
 
+
+  // Creating get route to pull info of user getting paid 
+  app.get("/api/user/paying/:id", function(req, res){
+    db.user.findOne({
+      where: {
+        id: req.params.id
+      }
+    }).then(function(dbUser){
+      res.json(dbUser);
+    })
+  })
+
+  //-------------
+
   app.post("/api/games", function(req, res) {
     console.log(req.body);
     db.Game.create(req.body).then(function(response) {
@@ -163,6 +196,44 @@ module.exports = function(app, passport) {
     });
   });
 
+  // Route that will update user's wallet after winnig a bet 
+  app.put("api/user/wallet/:id", function(req, res){
+    console.log(req.body);
+    db.user.update(
+      {
+        wallet: req.body.new_wallet
+      },
+      {
+        where: {
+          user_id: req.params.id
+        }
+      }
+    ).then(function(response){
+      res.json(response);
+    })
+  })
+
+
+  //-------------
+
+  // Route is switching boolean of bet paid to true
+
+  app.put("api/bets/:id", function(req, res){
+    console.log("--------------");
+    console.log(req.body);
+    db.Bet.update(
+      {
+        bet_paid: req.body.paid
+      },
+      {
+        where: {
+          id: req.params.id
+        }
+      }
+    )
+  });
+
+  //-----------------
   app.put("/api/games/:id", function(req, res) {
     console.log(req.body);
     var realID = req.params.id;
@@ -170,11 +241,11 @@ module.exports = function(app, passport) {
     console.log(realID);
     db.Game.update(
       {
-        game_result: req.body.game_result
+        winner: req.body.game_result
       },
       {
         where: {
-          id: realID
+          user_id: realID
         }
       }
     ).then(function(response) {

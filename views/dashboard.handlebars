@@ -46,6 +46,7 @@
             var homeScore = thisGame.game.home.runs;
             var awayScore = thisGame.game.away.runs;
             var gameStatus = thisGame.game.status;
+            var thisGameId = thisGame.game
             var winner;
 
             var findWinner = function() {
@@ -55,10 +56,6 @@
                 winner = awayCity + " " + awayTeam
               };
             };
-
-            function checkBets(){
-              
-            }
             function updateWinner() {
               // event.preventDefault();
               var id = (JSON.parse([j]) + 1);
@@ -77,7 +74,7 @@
                 }
               );
             }
-
+    
             if (gameStatus === "closed") {
               console.log("this game is over");
               findWinner();
@@ -262,6 +259,7 @@ $(document).ready(function() {
       bet_amount: bet
     }
     console.log(newBet);
+
     $.post("/api/bets", newBet)
       .then(function(data) {
     });
@@ -320,6 +318,57 @@ var showLeader = function(){
     }
   })
 }
+
+var payWinner = function(){
+  $.get("/api/games/winner", function(data){
+    console.log(data);
+
+    for(var i=0; i<data.length; i++){
+      
+      if(data[i].winner != "none"){
+
+        if(!data[i].bet_paid){
+          if(data[i].user_pick === data[i].winner){
+            var winnings = data[i].bet_amount * 2;
+            console.log(winnings);
+
+            $.get("/api/user/paying/" + data[i].user_id, function(data){
+              userWallet = data.wallet + winnings;
+              newWallet = {
+                new_wallet: userWallet
+              }
+              
+              $.ajax("/api/user/wallet/" + data.id, {
+                type: "PUT",
+                data: newWallet
+
+              }).then(function(){
+                console.log("Money added", newWallet);
+              })
+
+            });
+
+            var paidUser = {
+              paid: true
+            }
+            console.log("-----------------YAYDYRH");
+            console.log(data[i].id);
+            $.ajax("/api/bets/table/" + data[i].id, {
+              type: "PUT",
+              data: paidUser
+            }).then(function(){
+              console.log("You've been paid");
+            })
+          }
+        }
+      }else{
+        console.log("you've been paid");
+      }
+    }
+  })
+}       
+
+payWinner();
 showLeader()
 showBets();
  });
