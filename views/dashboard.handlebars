@@ -10,9 +10,9 @@
         <th class="leaderWinnings">Winnings</th>
       </tr>
     </table>
-    <h2 class="betsLive">Live Bets</h2>
+    <h2 class="betsLive">Bets</h2>
     <ol>
-      <div class="betsHistory"></div>
+      <div class="betsHistory" id="scrollBar"></div>
     </ol>
 
   </div>
@@ -297,8 +297,8 @@ var showBets = function(){
       console.log(typeof dateNtime);
       var betDate= dateNtime.substring(0,10);
       var betTime= dateNtime.substring(11, 19);
-      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betTime + "</span>" + " " + user + " bet " + bet + " on " + team + "." + "</li>";
-      $(".betsHistory").append(newBetLine);
+      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betTime + "</span>" + " " + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
+      $(".betsHistory").prepend(newBetLine);
     };
     
   });
@@ -307,7 +307,7 @@ var showBets = function(){
 var showLeader = function(){
   $.get("/api/users/ranking", function(data){
     console.log("IMPORTANT" + data[0]);
-    for(var i = 0; i < 9; i++) {
+    for(var i = 0; i < 5; i++) {
       var leaderTableRow = $("<tr>");
       var rank = i + 1;
       var user = data[i].username;

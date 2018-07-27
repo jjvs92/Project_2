@@ -220,6 +220,11 @@ Img {
   width: 80%;
   display: inline-block;
   text-align: initial;
+  max-height: 31em;
+  overflow: auto;
+}
+.betLog:first-child {
+  margin-top: 1.2em;
 }
 .betLog {
   margin-left: 1em;
@@ -235,6 +240,9 @@ Img {
   margin-top: 100px;
   border: 1px solid #ffffff;
   border-bottom: none;
+}
+.betHr {
+  margin-right: 1em;
 }
 .logTime {
   font-size: .6em;
@@ -293,8 +301,9 @@ th, td {
   .games {
     max-width: 50%;
     flex: 1;
-    height: 100vh;
+    height: 140vh;
     overflow: auto;
+    margin-top: 0;
     padding-right: 0;
   }
   .leaderBoard {
