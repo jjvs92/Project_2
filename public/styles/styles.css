@@ -214,6 +214,32 @@ Img {
   text-align: center;
   padding: 
 }
+/* Bets Log */
+.betsHistory {
+  border: solid #ffffff 1px;
+  width: 80%;
+  display: inline-block;
+  text-align: initial;
+}
+.betLog {
+  margin-left: 1em;
+  padding: .2em;
+}
+.betsLive {
+  color: #ff0000;
+  padding: 20px;
+  background-color: #131317;
+  margin-bottom: 0;
+  width: 80%;
+  margin: auto;
+  margin-top: 100px;
+  border: 1px solid #ffffff;
+  border-bottom: none;
+}
+.logTime {
+  font-size: .6em;
+  letter-spacing: initial;
+}
 hr {
   border-color: #a9a9a9;
 }
