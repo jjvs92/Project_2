@@ -18,12 +18,14 @@
 </div>
 
 <script>
-var key = "fpqcanwygm37gnuaan27k6ud"
-var today = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
-var hour = moment().calendar();
-console.log(hour);
+  var key = "fpqcanwygm37gnuaan27k6ud"
+  var today = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
+  var hour = moment().calendar();
 
-var findResults = function() {
+  console.log(hour);
+  
+  var findResults = function() {
+
   setTimeout(
     function() {
       var winners = [];
@@ -56,9 +58,11 @@ var findResults = function() {
               // event.preventDefault();
               var id = (JSON.parse([j]) + 1);
               var updatedWinner = winner;
+      
               var newResult = {
                 game_result: winner
               };
+
               $.ajax('/api/games/' + id, {
                 type: "PUT",
                 data: newResult 
@@ -85,46 +89,49 @@ var findResults = function() {
               losers.push(homeTeam);
             }
             };
+            
           }
         });
-    }, 1500);
-// THis here is console logging  the ID of the user that is signed in... when wanting to reference the user we can use {{userid}}--- this is becuase it was passed in authcontroller.js
+      }, 1500);
+      
+};
+  // THis here is console logging  the ID of the user that is signed in... when wanting to reference the user we can use {{userid}}--- this is becuase it was passed in authcontroller.js
 
-var signedInUser = {{userid}};
-var signedInWallet = {{userWallet}};
-var signedInUserName = "{{userName}}";
-function showUserID(){
-  console.log({{userid}});
-  console.log({{userWallet}});
-  console.log(signedInUserName);
-}
-showUserID();
-          
-//-------------------------------------------------
+  var signedInUser = {{userid}};
+  var signedInWallet = {{userWallet}};
+  var signedInUserName = "{{userName}}";
+  function showUserID(){
+    console.log({{userid}});
+    console.log({{userWallet}});
+    console.log(signedInUserName);
+  }
+  showUserID();
+            
+  //-------------------------------------------------
 
 var postGames = function(gameData) {
     $.post("/api/games", gameData)
     .then(getGames);
-};
+  };
 
-var getGames = function() {
-  $.ajax({
-    url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=" + key,
-    type: "GET",
-    success: function(data) {
-      // console.log(data.games.length);
-      for (var i = 0; i < data.games.length; i++) {
-        var homeTeams = [];
-        var awayTeams = [];
-        var awayTeam = data.games[i].away.name;
-        var homeTeam = data.games[i].home.name;
+  var getGames = function() {
+    $.ajax({
+      url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/2018/07/02/schedule.json?api_key=" + key,
+      type: "GET",
+      success: function(data) {
+        // console.log(data.games.length);
+        for (var i = 0; i < data.games.length; i++) {
+          var homeTeams = [];
+          var awayTeams = [];
+          var awayTeam = data.games[i].away.name;
+          var homeTeam = data.games[i].home.name;
 
-        homeTeams.push(homeTeam);
-        awayTeams.push(awayTeam);
+          homeTeams.push(homeTeam);
+          awayTeams.push(awayTeam);
+        }
       }
-    }
-  });
-};
+    });
+  };
 
 var showAction = function() {
   var homeTeams = [];
@@ -153,6 +160,7 @@ var showAction = function() {
         var gameID = data.games[i].id
 
         var newGame = {
+
           home_team: homeCity + " " + homeTeam,
           away_team: awayCity + " " + awayTeam,
           game_status: gameStatus,
@@ -164,8 +172,10 @@ var showAction = function() {
           console.log("New game added");
         });
 
+
         homeTeams.push(homeTeam);
         awayTeams.push(awayTeam);
+
         createDiv.append(
           `<div class='card-header'>GAME #${gameNum}
             <br>
@@ -197,7 +207,8 @@ var showAction = function() {
           </div>
             `
         );
-          //<img src="./images/Yankees.png" alt="Yankees">
+           //<img src="./images/Yankees.png" alt="Yankees">
+
         console.log(gameStatus)
         $(".games").append(createDiv);
         if(gameStatus == 'CLOSED')
@@ -217,48 +228,46 @@ var showAction = function() {
   });
   postGames();
 };
-console.log("ready");
+$(document).ready(function() {
+  console.log("ready");
 
-$(".bet-button").on("click", function(){
-  console.log("cools");
-  //console.log($(this).text().trim());
-  var teamBet = $(this).text().trim();
-  var bet = prompt("How much would you like to bet on " + teamBet + "?");
-  console.log(teamBet, parseInt(bet));
-  var userBetGameID = this.getAttribute("data-gameID");
-  
-  if(parseInt(bet) < signedInWallet){
+  $("body").on("click", ".bet-button", function(){
+    console.log("cools");
+    //console.log($(this).text().trim());
+    var teamBet = $(this).text().trim();
+    var bet = prompt("How much would you like to bet on " + teamBet + "?");
+    console.log(teamBet, parseInt(bet));
+    var userBetGameID = this.getAttribute("data-gameID");
+    
+    if (parseInt(bet) < signedInWallet) {
+    var newBet = {
+      user_id: {{userid}},
+      user_name: signedInUserName,
+      game_id: userBetGameID,
+      user_pick: teamBet,
+      bet_amount: bet
+    }
+    console.log(newBet);
 
-  var newBet = {
-    user_id: {{userid}},
-    user_name: signedInUserName,
-    game_id: userBetGameID,
-    user_pick: teamBet,
-    bet_amount: bet
-  }
-  console.log(newBet);
-  $.post("/api/bets", newBet)
-    .then(function(data) {
-  });
+    $.post("/api/bets", newBet)
+      .then(function(data) {
+    });
 
-  signedInWallet = signedInWallet - parseInt(bet);
-
-  console.log(signedInWallet);
-  var newWallet = {
-      new_wallet: signedInWallet
-  }
-
-  $.ajax("/api/user/wallet/" + signedInUser, {
-    type: "PUT",
-    data: newWallet
-  })
-    .then(
+    signedInWallet = signedInWallet - parseInt(bet);
+    console.log(signedInWallet);
+    var newWallet = {
+        new_wallet: signedInWallet
+    }
+    $.ajax("/api/user/wallet/" + signedInUser, {
+      type: "PUT",
+      data: newWallet
+    }).then(
       function(){
         console.log("Wallet Updated " + signedInWallet);
       }
     )
-  } else {
-    alert("you do not have enough");}
+  } else{alert("you do not have enough");}
+  });
 });
 
 var showBets = function(){
@@ -277,5 +286,4 @@ var showBets = function(){
 findResults();
 showAction();
 //showBets();
-});
 </script>
