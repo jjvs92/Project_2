@@ -7,7 +7,7 @@ var env = require("dotenv").load();
 var exphbs = require("express-handlebars");
 var path = require("path");
 
-var PORT = 3000 || process.env.JAWSDB_URL;
+var PORT = 3000 || process.env.PORT;
 
 //For BodyParser
 app.use(bodyParser.urlencoded({ extended: true }));
