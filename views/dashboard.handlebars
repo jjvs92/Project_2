@@ -5,12 +5,12 @@
     <div class="col-6 games" id="scrollBar"></div>
     <div class="col-6 leaderBoard">
       {{!-- Leader Board Table --}}
-      <h2 class="leader">Leader Board</h2>
+      <h2 class="leader">Leaderboard</h2>
       <table class="leaderFlex">
         <tr>
           <th class="leaderNum">#</th>
           <th class="leaderName">User</th>
-          <th class="leaderWinnings">Winnings</th>
+          <th class="leaderWinnings">Wallet</th>
         </tr>
       </table>
       {{!-- Bets Log --}}
@@ -21,6 +21,7 @@
 
     </div>
   </div>
+  {{> footerDashboard}}
 </div>
   <!-- Modal -->
   <div class="modal1">
@@ -166,7 +167,14 @@ var showAction = function() {
   var homeTeams = [];
   var awayTeams = [];
   var createDiv = $("<div class='card text-center'></div>");
-  var createImg = $("<img>")
+  var createImg = $("<img>");
+  var todaysGames = [];
+
+  var checkGames = function(games) {
+    $.get("/api/games", function() {
+
+    })
+  }
 
   $(".loginPrompt").empty();
   $.ajax({
@@ -185,11 +193,15 @@ var showAction = function() {
         var homeTeam = data.games[i].home.name;
         var status = data.games[i].status;
         var gameStatus = status.toUpperCase();
-        var gameDate = data.date
-        var gameID = data.games[i].id
+        var gameDate = data.date;
+        var gameID = data.games[i].id;
+        var gameTime = data.games[i].scheduled;
+        var realTime = moment(gameTime).format("hh:mm");
+
+        console.log("GAME TIME:");
+        console.log(realTime);
 
         var newGame = {
-
           home_team: homeCity + " " + homeTeam,
           away_team: awayCity + " " + awayTeam,
           game_status: gameStatus,
@@ -231,7 +243,10 @@ var showAction = function() {
             <div class='row'>          
               <div class='card-footer status'>GAME STATUS:
                 <span class='statusColor'>
-                ${gameStatus}
+                  ${gameStatus}
+                </span> | GAME TIME:
+                <span class='timeColor'>
+                  ${realTime}
                 </span>
               </div>
             </div>
@@ -249,14 +264,17 @@ var showAction = function() {
         else if(gameStatus === 'INPROGRESS')
         {
           $(".statusColor").css("color", "orange");
+          $(".timeColor").css("color", "orange");
         }
         else if(gameStatus === 'POSTPONED')
         {
           $(".statusColor").css("color", "grey");
+          $(".timeColor").css("color", "grey");
         }
         else if(gameStatus === 'SCHEDULED')
         {
           $(".statusColor").css("color", "green");
+          $(".timeColor").css("color", "green");
         }
 
       }    
@@ -307,6 +325,7 @@ $(document).ready(function() {
       var newWallet = {
           new_wallet: signedInWallet
       }
+      location.reload();
 
       $.ajax("/api/user/wallet/" + signedInUser, {
         type: "PUT",
@@ -320,7 +339,7 @@ $(document).ready(function() {
     } else{$(".warningText").text("Max bet available\: " + signedInWallet)
       
     }
-    })
+    });
 });
 
 var showBets = function(){
@@ -419,7 +438,9 @@ var showModal = function(team){
   //Click cancel to close modal
   $("body").on("click", ".cancelModal", function(){
     hideModel();
+    location.reload();
   });
+  
 }
 
 hideModel();
