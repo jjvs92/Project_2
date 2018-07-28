@@ -10,8 +10,15 @@
   <input class="btn" type="submit" value="Sign Up" /> --}}
 {{> header}}
   <div class="container">
+{{!-- Put image here --}}
     <div class="left">
+        <img style="max-height: 300px; max-width: 300px;" class="center" src="./images/softball-hitting-lessons 2 copy.png" alt="IMAGE HERE">
+        <br>
+        <br>
         <h1 class="signUpHeader">Sign up today!</h1>
+        <p class="signUpHeader">Fill out the fields in the form to create an account and get $500 to start up.</p>
+        <br>
+        <p class="signUpHeader">You will then be taken to our betting lobby.  Best of luck!</p>
     </div>
     <form class="align-items-center signUp" id="signup" name="signup" method="post" action="/signup">
         <label class="labels" for="inputFirstName">First Name</label>
@@ -35,6 +42,7 @@
         <input class="inputs" type="password" id="password" name="password" placeholder="Password">
         <br>
         <input class="inputs btn" type="submit" id="createUser" class="btn btn-primary" value="Create Account">
+        <a class="inputs btn" href="/signin">Back to Sign In</a>
     </form>
 </div>
 {{> footer}}
