@@ -214,6 +214,24 @@ var showAction = function() {
         var gameID = data.games[i].id;
         var gameTime = data.games[i].scheduled;
         var realTime = moment(gameTime).format("hh:mm");
+        var textColor;
+
+        if(gameStatus === 'CLOSED')
+        {
+          textColor = "red";
+        }
+        else if(gameStatus === 'INPROGRESS')
+        {
+          textColor = "orange";
+        }
+        else if(gameStatus === 'POSTPONED')
+        {
+          textColor = "grey";
+        }
+        else if(gameStatus === 'SCHEDULED')
+        {
+          textColor = "green";
+        }
 
         console.log("GAME TIME:");
         console.log(realTime);
@@ -264,10 +282,15 @@ var showAction = function() {
             <hr>
             <div class='row'>          
               <div class='card-footer status'>GAME STATUS:
-                <span class='statusColor'>
+                <span class='statusColor' style='color: ${textColor}'>
                   ${gameStatus}
+<<<<<<< HEAD
+                </span> | GAME TIME:
+                <span class='timeColor' style='color: ${textColor}'>
+=======
                 </span><br>GAME TIME:
                 <span class='timeColor'>
+>>>>>>> dedd4cf3007f00fda55ce690e1d21fb0d3ef6488
                   ${realTime}
                 </span>
               </div>
@@ -279,6 +302,8 @@ var showAction = function() {
 
         console.log(gameStatus);
         $(".games").append(createDiv);
+<<<<<<< HEAD
+=======
         if(gameStatus === 'CLOSED')
         {
           //Removing Class so modal doesn't work anymore
@@ -305,6 +330,7 @@ var showAction = function() {
           $(".statusColor").css("color", "green");
           $(".timeColor").css("color", "green");
         }
+>>>>>>> dedd4cf3007f00fda55ce690e1d21fb0d3ef6488
 
       }    
     }
@@ -389,6 +415,7 @@ var showBets = function(){
     console.log(data);
     for(var i=0; i< data.length; i++){
       var user = data[i].user_name;
+      var userName = user.toUpperCase();
       var bet = data[i].bet_amount;
       var team = data[i].user_pick;
       var dateNtime = data[i].createdAt;
