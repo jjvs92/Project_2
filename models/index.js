@@ -8,6 +8,13 @@ var config    = require(path.join(__dirname, '..', 'config', 'config.json'))[env
 var sequelize = new Sequelize(config.database, config.username, config.password, config);
 var db        = {};
 
+// if(process.env.JAWSDB_URL){
+//   sequelize = "production";
+// }else{
+//   sequelize = process.env.NODE_ENV;
+// }
+
+
 
 fs
   .readdirSync(__dirname)
