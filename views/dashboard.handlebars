@@ -368,7 +368,7 @@ $(document).ready(function() {
       }).then(
         function(){
           console.log("Wallet Updated " + signedInWallet);
-        }
+        });
 
         $.ajax("/api/user/wallet/" + signedInUser, {
           type: "PUT",
@@ -377,7 +377,7 @@ $(document).ready(function() {
           function(){
             console.log("Wallet Updated " + signedInWallet);
           }
-        )
+        );
 
       } else{$(".warningText").text("Max bet available\: " + signedInWallet)
         
