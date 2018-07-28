@@ -19,7 +19,16 @@ module.exports = function(sequelize, Sequelize) {
     bet_amount: {
       type: Sequelize.INTEGER,
       allowNull: false
-    }
+    },
+    bet_paid: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
+    winner: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: "none"
+    },
   });
   return Bet;
 };
