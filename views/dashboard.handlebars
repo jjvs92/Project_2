@@ -214,6 +214,24 @@ var showAction = function() {
         var gameID = data.games[i].id;
         var gameTime = data.games[i].scheduled;
         var realTime = moment(gameTime).format("hh:mm");
+        var textColor;
+
+        if(gameStatus === 'CLOSED')
+        {
+          textColor = "red";
+        }
+        else if(gameStatus === 'INPROGRESS')
+        {
+          textColor = "orange";
+        }
+        else if(gameStatus === 'POSTPONED')
+        {
+          textColor = "grey";
+        }
+        else if(gameStatus === 'SCHEDULED')
+        {
+          textColor = "green";
+        }
 
         console.log("GAME TIME:");
         console.log(realTime);
@@ -264,10 +282,10 @@ var showAction = function() {
             <hr>
             <div class='row'>          
               <div class='card-footer status'>GAME STATUS:
-                <span class='statusColor'>
+                <span class='statusColor' style='color: ${textColor}'>
                   ${gameStatus}
                 </span> | GAME TIME:
-                <span class='timeColor'>
+                <span class='timeColor' style='color: ${textColor}'>
                   ${realTime}
                 </span>
               </div>
@@ -279,25 +297,6 @@ var showAction = function() {
 
         console.log(gameStatus)
         $(".games").append(createDiv);
-        if(gameStatus === 'CLOSED')
-        {
-          $(".status").css("color", "red");
-        }
-        else if(gameStatus === 'INPROGRESS')
-        {
-          $(".statusColor").css("color", "orange");
-          $(".timeColor").css("color", "orange");
-        }
-        else if(gameStatus === 'POSTPONED')
-        {
-          $(".statusColor").css("color", "grey");
-          $(".timeColor").css("color", "grey");
-        }
-        else if(gameStatus === 'SCHEDULED')
-        {
-          $(".statusColor").css("color", "green");
-          $(".timeColor").css("color", "green");
-        }
 
       }    
     }
@@ -369,13 +368,14 @@ var showBets = function(){
     console.log(data);
     for(var i=0; i< data.length; i++){
       var user = data[i].user_name;
+      var userName = user.toUpperCase();
       var bet = data[i].bet_amount;
       var team = data[i].user_pick;
       var dateNtime = data[i].createdAt;
       console.log(typeof dateNtime);
       var betDate= dateNtime.substring(0,10);
       var betTime= dateNtime.substring(11, 19);
-      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betTime + "</span>" + "<br>" + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
+      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betTime + "</span>" + "<br>" + userName + " bet $" + bet + " on the" + team + "." + "<hr class='betHr'>" + "</li>";
       $(".betsHistory").prepend(newBetLine);
     };
     
