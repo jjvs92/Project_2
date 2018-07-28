@@ -317,7 +317,7 @@ Img {
   width: 80%;
   display: inline-block;
   text-align: initial;
-  max-height: 31em;
+  max-height: 36em;
   overflow: auto;
   list-style-type: none;
 }
