@@ -83,8 +83,6 @@
               } else {
                 winner = awayCity + " " + awayTeam
               };
-              console.log("Winner:");
-              console.log(winner);
             };
             function updateWinner() {
               // event.preventDefault();
@@ -95,6 +93,9 @@
                 game_result: updatedWinner,
                 game_id: thisGameId
               };
+
+              console.log("NEW RESULT:");
+              console.log(newResult);
 
               $.ajax('/api/games', {
                 type: "PUT",
@@ -304,178 +305,182 @@ var showAction = function() {
 };
 
 $(document).ready(function() {  
-    $("body").on("click", ".bet-button", function(){
-      //console.log($(this).text().trim());
-      teamBet = $(this).text().trim();
-      //Show modal
-      showModal(teamBet);
-      //Clear Warning Text
-      $(".warningText").text("")
-      //Grabbing modal to set max value of scroll to signedInWallet
-      var betInputMax = $('.betInput');
-      betInputMax.attr("max", signedInWallet)
-      //var bet = prompt("How much would you like to bet on " + teamBet + "?");
+  $("body").on("click", ".bet-button", function(){
+    //console.log($(this).text().trim());
+    teamBet = $(this).text().trim();
+    //Show modal
+    showModal(teamBet);
+    //Clear Warning Text
+    $(".warningText").text("")
+    //Grabbing modal to set max value of scroll to signedInWallet
+    var betInputMax = $('.betInput');
+    betInputMax.attr("max", signedInWallet)
+    //var bet = prompt("How much would you like to bet on " + teamBet + "?");
+    var bet = $(".betInput").val();
+    console.log(teamBet, parseInt(bet));
+    var userBetGameID = this.getAttribute("data-gameID");
+    //Click function to confirm modal
+    $("body").on("click", ".confirmModal", function(e)
+    {
+      e.preventDefault();
       var bet = $(".betInput").val();
-      console.log(teamBet, parseInt(bet));
-      var userBetGameID = this.getAttribute("data-gameID");
-
-      
-      //Click function to confirm modal
-      $("body").on("click", ".confirmModal", function(e)
-      {
-        e.preventDefault();
-        var bet = $(".betInput").val();
-        console.log(bet);
-        if(parseInt(bet) < parseInt(signedInWallet)){
-          hideModel();
-        var newBet = {
-          user_id: {{userid}},
-          user_name: signedInUserName,
-          game_id: userBetGameID,
-          user_pick: teamBet,
-          bet_amount: bet
-        }
-        console.log("New bet: " + newBet);
-
-        $.post("/api/bets", newBet)
-          .then(function(data) {
-        });
-
-        signedInWallet = signedInWallet - parseInt(bet);
-
-        console.log(signedInWallet);
-        var newWallet = {
-            new_wallet: signedInWallet
-        }
-        location.reload();
-
-        $.ajax("/api/user/wallet/" + signedInUser, {
-          type: "PUT",
-          data: newWallet
-        }).then(
-          function(){
-            console.log("Wallet Updated " + signedInWallet);
-          }
-        )
-
-      } else{$(".warningText").text("Max bet available\: " + signedInWallet)
-        
-      }
-      $(".betInput").val("");   
-      })
-  });
-
-    var showBets = function(){
-      $.get("/api/bets/table", function(data){
-        console.log(data);
-        for(var i=0; i< data.length; i++){
-          var user = data[i].user_name;
-          var bet = data[i].bet_amount;
-          var team = data[i].user_pick;
-          var dateNtime = data[i].createdAt;
-          console.log(typeof dateNtime);
-          var betDate= dateNtime.substring(0,10);
-          var betTime= dateNtime.substring(11, 19);
-          var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betTime + "</span>" + "<br>" + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
-          $(".betsHistory").prepend(newBetLine);
-        };
-        
-      });
-    }
-
-    var showLeader = function(){
-      $.get("/api/users/ranking", function(data){
-        console.log("IMPORTANT" + data[0]);
-        for(var i = 0; i < 5; i++) {
-          var leaderTableRow = $("<tr>");
-          var rank = i + 1;
-          var user = data[i].username;
-          var wallet = data[i].wallet;
-          var tdRank = $('<td class="leaderNum">').text(rank);     
-          var tdUser = $('<td class="leaderName">').text(user);
-          var tdWallet = $('<td class="leaderWinnings">').text(wallet);
-          leaderTableRow.append(tdRank, tdUser, tdWallet)
-          $('.leaderFlex').append(leaderTableRow);
-        }
-      })
-    }
-
-    var payWinner = function(){
-
-      console.log("--------");
-      console.log("ITS RUNNING");
-      console.log("--------");
-
-      $.get("/api/games/winner", function(data){
-        console.log(data);
-
-        for(var i=0; i<data.length; i++){
-          
-          if(data[i].winner != "none"){
-
-            if(!data[i].bet_paid){
-              if(data[i].user_pick === data[i].winner){
-                var winnings = data[i].bet_amount * 2;
-                console.log(winnings);
-
-                $.get("/api/user/paying/" + data[i].user_id, function(data){
-                  userWallet = data.wallet + winnings;
-                  newWallet = {
-                    new_wallet: userWallet
-                  }
-                  
-                  $.ajax("/api/user/wallet/" + data.id, {
-                    type: "PUT",
-                    data: newWallet
-
-                  }).then(function(){
-                    console.log("Money added", newWallet);
-                  })
-
-                });
-
-                var paidUser = {
-                  paid: true
-                }
-                console.log("-----------------YAYDYRH");
-                console.log(data[i].id);
-                $.ajax("/api/bets/table/" + data[i].id, {
-                  type: "PUT",
-                  data: paidUser
-                }).then(function(){
-                  console.log("You've been paid");
-                })
-              }
-            }
-          }else{
-            console.log("you've been paid");
-          }
-        }
-      })
-    }    
-
-    var hideModel = function(){
-      $(".modal1").hide();
-      $(".page-mask").removeClass("active");
-    }
-
-    var showModal = function(team){
-      $(".modal1").show();
-      $(".page-mask").addClass("active");
-      $(".placeBetTeam").text(team)
-      //Click cancel to close modal
-      $("body").on("click", ".cancelModal", function(){
+      console.log(bet);
+      if(parseInt(bet) < parseInt(signedInWallet)){
         hideModel();
-        location.reload();
+      var newBet = {
+        user_id: {{userid}},
+        user_name: signedInUserName,
+        game_id: userBetGameID,
+        user_pick: teamBet,
+        bet_amount: bet
+      }
+      console.log("New bet: " + newBet);
+
+      $.post("/api/bets", newBet)
+        .then(function(data) {
       });
+
+      signedInWallet = signedInWallet - parseInt(bet);
+
+      console.log(signedInWallet);
+      var newWallet = {
+          new_wallet: signedInWallet
+      }
+      location.reload();
+
+      $.ajax("/api/user/wallet/" + signedInUser, {
+        type: "PUT",
+        data: newWallet
+      }).then(
+        function(){
+          console.log("Wallet Updated " + signedInWallet);
+        }
+      )
+
+    } else{$(".warningText").text("Max bet available\: " + signedInWallet)
       
     }
-    showAction();
-    findResults();
-    hideModel();
-    payWinner();
-    showLeader();
-    showBets();
+    $(".betInput").val("");   
+    })
+});
 
+var showBets = function(){
+  $.get("/api/bets/table", function(data){
+    console.log(data);
+    for(var i=0; i< data.length; i++){
+      var user = data[i].user_name;
+      var bet = data[i].bet_amount;
+      var team = data[i].user_pick;
+      var dateNtime = data[i].createdAt;
+      console.log(typeof dateNtime);
+      var betDate= dateNtime.substring(0,10);
+      var betTime= dateNtime.substring(11, 19);
+      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betTime + "</span>" + "<br>" + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
+      $(".betsHistory").prepend(newBetLine);
+    };
+    
+  });
+}
+
+var showLeader = function(){
+  $.get("/api/users/ranking", function(data){
+    console.log("IMPORTANT" + data[0]);
+    for(var i = 0; i < 5; i++) {
+      var leaderTableRow = $("<tr>");
+      var rank = i + 1;
+      var user = data[i].username;
+      var wallet = data[i].wallet;
+      var tdRank = $('<td class="leaderNum">').text(rank);     
+      var tdUser = $('<td class="leaderName">').text(user);
+      var tdWallet = $('<td class="leaderWinnings">').text(wallet);
+      leaderTableRow.append(tdRank, tdUser, tdWallet)
+      $('.leaderFlex').append(leaderTableRow);
+    }
+  })
+}
+
+var payWinner = function(){
+
+  console.log("--------");
+  console.log("ITS RUNNING");
+  console.log("--------");
+
+  $.get("/api/games/winner", function(data){
+    console.log(data);
+
+    for(var i=0; i<data.length; i++){
+      
+      if(data[i].winner != "none"){
+
+        if(!data[i].bet_paid){
+          if(data[i].user_pick === data[i].winner){
+            var winnings = data[i].bet_amount * 2;
+            console.log(winnings);
+
+            $.get("/api/user/paying/" + data[i].user_id, function(data){
+              userWallet = data.wallet + winnings;
+              newWallet = {
+                new_wallet: userWallet
+              }
+              
+              $.ajax("/api/user/wallet/" + data.id, {
+                type: "PUT",
+                data: newWallet
+
+              }).then(function(){
+                console.log("Money added", newWallet);
+              })
+
+            });
+
+            var paidUser = {
+              paid: true
+            }
+            console.log("-----------------YAYDYRH");
+            console.log(data[i].id);
+            $.ajax("/api/bets/table/" + data[i].id, {
+              type: "PUT",
+              data: paidUser
+            }).then(function(){
+              console.log("You've been paid");
+            })
+          }
+        }
+      }else{
+        console.log("you've been paid");
+      }
+    }
+  })
+}    
+
+var hideModel = function(){
+  $(".modal1").hide();
+  $(".page-mask").removeClass("active");
+}
+
+var showModal = function(team){
+  $(".modal1").show();
+  $(".page-mask").addClass("active");
+  $(".placeBetTeam").text(team)
+  //Click cancel to close modal
+  $("body").on("click", ".cancelModal", function(){
+    hideModel();
+    location.reload();
+  });
+  
+}
+
+hideModel();
+payWinner();
+showLeader();
+showBets();
  });
+
+
+
+findResults();
+showAction();
+
+ 
+
 </script>
