@@ -428,7 +428,7 @@ th, td {
   .games {
     max-width: 50%;
     flex: 1;
-    height: 150vh;
+    height: 160vh;
     overflow: auto;
     margin-top: 0;
     padding-right: 0;
