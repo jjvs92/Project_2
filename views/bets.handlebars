@@ -3,7 +3,7 @@
 <div class="betsDiv">
 </div>
 <script>
-    $.get("/api/bets").then(function(userBets) {
+    $.get("/api/user/bets/" + {{userid}}).then(function(userBets) {
         console.log(userBets);
     })
 </script>
