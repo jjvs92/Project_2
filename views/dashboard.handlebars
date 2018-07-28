@@ -277,8 +277,9 @@ var showAction = function() {
         );
            //<img src="./images/Yankees.png" alt="Yankees">
 
-        console.log(gameStatus)
+        console.log(gameStatus);
         $(".games").append(createDiv);
+<<<<<<< HEAD
         //if(gameStatus === 'CLOSED')
         //{
           //$(".status").css("color", "red");
@@ -298,6 +299,30 @@ var showAction = function() {
           //$(".statusColor").css("color", "green");
           //$(".timeColor").css("color", "green");
         //}
+=======
+        if(gameStatus === 'CLOSED')
+        {
+          $(".status").css("color", "red");
+        }
+        else if(gameStatus === "INPROGRESS")
+        {
+          $(".statusColor").css("color", "orange");
+          $(".timeColor").css("color", "orange");
+          console.log("orange");
+        }
+        else if(gameStatus === "POSTPONED")
+        {
+          $(".statusColor").css("color", "grey");
+          $(".timeColor").css("color", "grey");
+          console.log("grey");
+        }
+        else if(gameStatus === "SCHEDULED")
+        {
+          $(".statusColor").css("color", "green");
+          $(".timeColor").css("color", "green");
+          console.log("green");
+        }
+>>>>>>> master
 
       }    
     }
