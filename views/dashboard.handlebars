@@ -284,13 +284,8 @@ var showAction = function() {
               <div class='card-footer status'>GAME STATUS:
                 <span class='statusColor' style='color: ${textColor}'>
                   ${gameStatus}
-<<<<<<< HEAD
                 </span> | GAME TIME:
                 <span class='timeColor' style='color: ${textColor}'>
-=======
-                </span><br>GAME TIME:
-                <span class='timeColor'>
->>>>>>> dedd4cf3007f00fda55ce690e1d21fb0d3ef6488
                   ${realTime}
                 </span>
               </div>
@@ -302,35 +297,6 @@ var showAction = function() {
 
         console.log(gameStatus);
         $(".games").append(createDiv);
-<<<<<<< HEAD
-=======
-        if(gameStatus === 'CLOSED')
-        {
-          //Removing Class so modal doesn't work anymore
-          $(".bet-button").css("background-color", "darkgray");
-          $(".bet-button").removeClass(".bet-button");
-          $(".bet-button").removeClass(".btn-success");
-          $(".status").css("color", "red");
-        }
-        else if(gameStatus === 'INPROGRESS')
-        {
-          $(".bet-button").css("background-color", "darkgray");
-          $(".bet-button").removeClass(".bet-button");
-          $(".bet-button").removeClass(".btn-success");
-          $(".statusColor").css("color", "orange");
-          $(".timeColor").css("color", "orange");
-        }
-        else if(gameStatus === 'POSTPONED')
-        {
-          $(".statusColor").css("color", "grey");
-          $(".timeColor").css("color", "grey");
-        }
-        else if(gameStatus === 'SCHEDULED')
-        {
-          $(".statusColor").css("color", "green");
-          $(".timeColor").css("color", "green");
-        }
->>>>>>> dedd4cf3007f00fda55ce690e1d21fb0d3ef6488
 
       }    
     }
