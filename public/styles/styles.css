@@ -113,6 +113,16 @@ body {
   text-decoration: none;
   color: #b31313;
 }
+.myBetsLink {
+  position: absolute;
+  top: 20px;
+  right: 200px;
+  color: #ff0000;
+}
+.myBetsLink:hover {
+  text-decoration: none;
+  color: #b31313;
+}
 .flex1 {
   margin: 0 5%;
   margin: auto;
@@ -155,6 +165,7 @@ body {
 }
 /* Modals */
 .modal1 {
+  visibility: hidden;
   max-width: 460px;
   display: flex;
   flex-direction: column;
@@ -308,6 +319,7 @@ Img {
   text-align: initial;
   max-height: 31em;
   overflow: auto;
+  list-style-type: none;
 }
 .betLog:first-child {
   margin-top: 1.2em;
@@ -317,6 +329,7 @@ Img {
   padding: .2em;
 }
 .betsLive {
+  text-align: center;
   color: #ff0000;
   padding: 20px;
   background-color: #131317;
@@ -365,6 +378,31 @@ table, th, td {
 th, td {
   padding: 1em;
   text-align: left
+}
+/* My Bets */
+.myBetsFlex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 80%;
+  margin: auto;
+}
+.myBets {
+  max-height: max-content;
+  overflow: initial;
+}
+.myBetsLive {
+  margin-top: 0;
+}
+.dashboardLink {
+  position: absolute;
+    top: 20px;
+    right: 200px;
+    color: #ff0000;
+}
+.dashboardLink:hover {
+  text-decoration: none;
+  color: #b31313;
 }
 /* Media Queries */
 @media only screen and (min-width: 700px) {

@@ -284,13 +284,8 @@ var showAction = function() {
               <div class='card-footer status'>GAME STATUS:
                 <span class='statusColor' style='color: ${textColor}'>
                   ${gameStatus}
-<<<<<<< HEAD
                 </span> | GAME TIME:
                 <span class='timeColor' style='color: ${textColor}'>
-=======
-                </span><br>GAME TIME:
-                <span class='timeColor'>
->>>>>>> dedd4cf3007f00fda55ce690e1d21fb0d3ef6488
                   ${realTime}
                 </span>
               </div>
@@ -302,35 +297,6 @@ var showAction = function() {
 
         console.log(gameStatus);
         $(".games").append(createDiv);
-<<<<<<< HEAD
-=======
-        if(gameStatus === 'CLOSED')
-        {
-          //Removing Class so modal doesn't work anymore
-          $(".bet-button").css("background-color", "darkgray");
-          $(".bet-button").removeClass(".bet-button");
-          $(".bet-button").removeClass(".btn-success");
-          $(".status").css("color", "red");
-        }
-        else if(gameStatus === 'INPROGRESS')
-        {
-          $(".bet-button").css("background-color", "darkgray");
-          $(".bet-button").removeClass(".bet-button");
-          $(".bet-button").removeClass(".btn-success");
-          $(".statusColor").css("color", "orange");
-          $(".timeColor").css("color", "orange");
-        }
-        else if(gameStatus === 'POSTPONED')
-        {
-          $(".statusColor").css("color", "grey");
-          $(".timeColor").css("color", "grey");
-        }
-        else if(gameStatus === 'SCHEDULED')
-        {
-          $(".statusColor").css("color", "green");
-          $(".timeColor").css("color", "green");
-        }
->>>>>>> dedd4cf3007f00fda55ce690e1d21fb0d3ef6488
 
       }    
     }
@@ -363,7 +329,7 @@ $(document).ready(function() {
       else{
         console.log(bet);
         if(parseInt(bet) < parseInt(signedInWallet)){
-          hideModel();
+          hideModal();
         var newBet = {
           user_id: {{userid}},
           user_name: signedInUserName,
@@ -436,7 +402,7 @@ var showBets = function(){
         betHour = parseInt(betHour) - 12;
       }
       var betTime = dateNtime.substring(11, 19);
-      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betHour + betMinSec + merediem + "</span>" + "<br>" + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
+      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + bet + "</span>" + "<br>" + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
       $(".betsHistory").prepend(newBetLine);
     };
     
@@ -514,24 +480,26 @@ var payWinner = function(){
   })
 }    
 
-var hideModel = function(){
+var hideModal = function(){
   $(".modal1").hide();
+  $(".modal1").css("visibility", "hidden");
   $(".page-mask").removeClass("active");
 }
 
 var showModal = function(team){
   $(".modal1").show();
+  $(".modal1").css("visibility", "visible");
   $(".page-mask").addClass("active");
   $(".placeBetTeam").text(team)
   //Click cancel to close modal
   $("body").on("click", ".cancelModal", function(){
-    hideModel();
+    hideModal();
     location.reload();
   });
   
 }
 
-hideModel();
+hideModal();
 payWinner();
 showLeader();
 showBets();
