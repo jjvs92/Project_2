@@ -74,7 +74,7 @@
             var homeScore = thisGame.game.home.runs;
             var awayScore = thisGame.game.away.runs;
             var gameStatus = thisGame.game.status;
-            var thisGameId = thisGame.game
+            var thisGameId = thisGame.game.id
             var winner;
 
             var findWinner = function() {
@@ -90,10 +90,14 @@
               var updatedWinner = winner;
       
               var newResult = {
-                game_result: winner
+                game_result: updatedWinner,
+                game_id: thisGameId
               };
 
-              $.ajax('/api/games/' + id, {
+              console.log("NEW RESULT:");
+              console.log(newResult);
+
+              $.ajax('/api/games', {
                 type: "PUT",
                 data: newResult 
               }).then(
@@ -224,12 +228,12 @@ var showAction = function() {
           var stringGameID= JSON.stringify(gameID);
           console.log(gamesAlreadyPosted.indexOf(stringGameID));
 
-          //if(gamesAlreadyPosted.indexOf(gameID) <=0){
-          // console.log("THIS TECHNICALLY WORKS");
-        //$.post('/api/games', newGame).then(function() {
-           // console.log("New game added");
-         // });
-       // };
+          if(gamesAlreadyPosted.indexOf(gameID) <=0){
+           console.log("THIS TECHNICALLY WORKS");
+        $.post('/api/games', newGame).then(function() {
+            console.log("New game added");
+          });
+        };
 
 
         homeTeams.push(homeTeam);
@@ -396,6 +400,11 @@ var showLeader = function(){
 }
 
 var payWinner = function(){
+
+  console.log("--------");
+  console.log("ITS RUNNING");
+  console.log("--------");
+
   $.get("/api/games/winner", function(data){
     console.log(data);
 
