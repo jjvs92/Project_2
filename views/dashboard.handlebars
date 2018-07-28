@@ -33,7 +33,7 @@
       <p class="modalContent">
         How much would you like to bet on the <span class="placeBetTeam"></span>?
       </p>
-      <input class="betInput" type="number" min="1" value="1" name="bet" required>
+      <input class="betInput" type="number" min="1" value="" name="bet" required>
     </div>
     <div class="modalFlexRow">
       <button class="btn btn-warning cancelModal">Cancel</button>
@@ -138,10 +138,6 @@
             
   //-------------------------------------------------
 
-var postGames = function(gameData) {
-    $.post("/api/games", gameData)
-    .then(getGames);
-  };
 
   var getGames = function() {
     $.ajax({
@@ -168,12 +164,29 @@ var showAction = function() {
   var createDiv = $("<div class='card text-center'></div>");
   var createImg = $("<img>")
 
+  var gamesAlreadyPosted = [];
+
+  $.get("/api/games", function(data){
+
+    for(var w=0; w < data.length; w++){
+      var test= data[w].game_id;
+        gamesAlreadyPosted.push(test)
+        //console.log(test);
+    }
+  })        
+
   $(".loginPrompt").empty();
   $.ajax({
     url: "https://cors-everywhere.herokuapp.com/http://api.sportradar.us/mlb/trial/v6.5/en/games/" + today + "/schedule.json?api_key=" + key,
     type: "GET",
     success: function(data) {
       console.log(data.date);
+
+   
+          console.log("--------------------------")
+          console.log(gamesAlreadyPosted);
+          console.log("--------------------------")
+
 
       //console.log(data.games.length);
       // console.log(data.games.length);
@@ -196,10 +209,15 @@ var showAction = function() {
           game_id: gameID,
           game_date: gameDate
         };
+          var stringGameID= JSON.stringify(gameID);
+          console.log(gamesAlreadyPosted.indexOf(stringGameID));
 
-        $.post('/api/games', newGame).then(function() {
-          console.log("New game added");
-        });
+          //if(gamesAlreadyPosted.indexOf(gameID) <=0){
+          // console.log("THIS TECHNICALLY WORKS");
+        //$.post('/api/games', newGame).then(function() {
+           // console.log("New game added");
+         // });
+       // };
 
 
         homeTeams.push(homeTeam);
@@ -262,7 +280,6 @@ var showAction = function() {
       }    
     }
   });
-  postGames();
 };
 
 $(document).ready(function() {  
@@ -320,6 +337,7 @@ $(document).ready(function() {
     } else{$(".warningText").text("Max bet available\: " + signedInWallet)
       
     }
+    $(".betInput").val("");   
     })
 });
 
@@ -431,7 +449,6 @@ showBets();
 
 findResults();
 showAction();
-
 
  
 </script>
