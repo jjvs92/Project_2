@@ -3,8 +3,9 @@
 var fs        = require("fs");
 var path      = require("path");
 var Sequelize = require("sequelize");
-var env       = config.env.JAWSDB_URL ?"production" : "development";
+
 var config    = require(path.join(__dirname, '..', 'config', 'config.json'))[env];
+var env       = config.env.JAWSDB_URL ? "production" : "development";
 if(config.use_env_variable){
   var sequelize = new Sequelize(process.env[config.use_env_variable])
 } else {
