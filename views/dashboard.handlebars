@@ -266,7 +266,7 @@ var showAction = function() {
               <div class='card-footer status'>GAME STATUS:
                 <span class='statusColor'>
                   ${gameStatus}
-                </span> | GAME TIME:
+                </span><br>GAME TIME:
                 <span class='timeColor'>
                   ${realTime}
                 </span>
@@ -287,26 +287,23 @@ var showAction = function() {
           $(".bet-button").removeClass(".btn-success");
           $(".status").css("color", "red");
         }
-        else if(gameStatus === "INPROGRESS")
+        else if(gameStatus === 'INPROGRESS')
         {
           $(".bet-button").css("background-color", "darkgray");
           $(".bet-button").removeClass(".bet-button");
           $(".bet-button").removeClass(".btn-success");
           $(".statusColor").css("color", "orange");
           $(".timeColor").css("color", "orange");
-          console.log("orange");
         }
-        else if(gameStatus === "POSTPONED")
+        else if(gameStatus === 'POSTPONED')
         {
           $(".statusColor").css("color", "grey");
           $(".timeColor").css("color", "grey");
-          console.log("grey");
         }
-        else if(gameStatus === "SCHEDULED")
+        else if(gameStatus === 'SCHEDULED')
         {
           $(".statusColor").css("color", "green");
           $(".timeColor").css("color", "green");
-          console.log("green");
         }
 
       }    

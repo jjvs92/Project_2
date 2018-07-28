@@ -390,7 +390,7 @@ th, td {
   .games {
     max-width: 50%;
     flex: 1;
-    height: 135vh;
+    height: 150vh;
     overflow: auto;
     margin-top: 0;
     padding-right: 0;
