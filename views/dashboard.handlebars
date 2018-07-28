@@ -281,10 +281,17 @@ var showAction = function() {
         $(".games").append(createDiv);
         if(gameStatus === 'CLOSED')
         {
+          //Removing Class so modal doesn't work anymore
+          $(".bet-button").css("background-color", "darkgray");
+          $(".bet-button").removeClass(".bet-button");
+          $(".bet-button").removeClass(".btn-success");
           $(".status").css("color", "red");
         }
         else if(gameStatus === "INPROGRESS")
         {
+          $(".bet-button").css("background-color", "darkgray");
+          $(".bet-button").removeClass(".bet-button");
+          $(".bet-button").removeClass(".btn-success");
           $(".statusColor").css("color", "orange");
           $(".timeColor").css("color", "orange");
           console.log("orange");
@@ -327,23 +334,27 @@ $(document).ready(function() {
     {
       e.preventDefault();
       var bet = $(".betInput").val();
-      console.log(bet);
-      if(parseInt(bet) < parseInt(signedInWallet)){
-        hideModel();
-      var newBet = {
-        user_id: {{userid}},
-        user_name: signedInUserName,
-        game_id: userBetGameID,
-        user_pick: teamBet,
-        bet_amount: bet
+      if(bet < 1){
+        $(".warningText").text("Invalid bet amount")
       }
-      console.log("New bet: " + newBet);
+      else{
+        console.log(bet);
+        if(parseInt(bet) < parseInt(signedInWallet)){
+          hideModel();
+        var newBet = {
+          user_id: {{userid}},
+          user_name: signedInUserName,
+          game_id: userBetGameID,
+          user_pick: teamBet,
+          bet_amount: bet
+        }
+        console.log("New bet: " + newBet);
 
-      $.post("/api/bets", newBet)
-        .then(function(data) {
-      });
+        $.post("/api/bets", newBet)
+          .then(function(data) {
+        });
 
-      signedInWallet = signedInWallet - parseInt(bet);
+        signedInWallet = signedInWallet - parseInt(bet);
 
       console.log(signedInWallet);
       var newWallet = {
@@ -358,10 +369,19 @@ $(document).ready(function() {
         function(){
           console.log("Wallet Updated " + signedInWallet);
         }
-      )
 
-    } else{$(".warningText").text("Max bet available\: " + signedInWallet)
-      
+        $.ajax("/api/user/wallet/" + signedInUser, {
+          type: "PUT",
+          data: newWallet
+        }).then(
+          function(){
+            console.log("Wallet Updated " + signedInWallet);
+          }
+        )
+
+      } else{$(".warningText").text("Max bet available\: " + signedInWallet)
+        
+      }
     }
     $(".betInput").val("");   
     })
@@ -376,9 +396,23 @@ var showBets = function(){
       var team = data[i].user_pick;
       var dateNtime = data[i].createdAt;
       console.log(typeof dateNtime);
-      var betDate= dateNtime.substring(0,10);
-      var betTime= dateNtime.substring(11, 19);
-      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betTime + "</span>" + "<br>" + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
+      var betDate = dateNtime.substring(0, 10);
+      var betHour = dateNtime.substring(11, 13);
+      var betMin = dateNtime.substring(15, 16);
+      var betMinSec = dateNtime.substring(13, 19);
+      var merediem = " AM";
+      betHour = parseInt(betHour) - 5;
+      console.log("BETHOUR: " + betHour)
+      console.log("BETMIN: " + betMin)
+      console.log("BETMINSEC: " + betMinSec)
+      if(betHour > 12 && betMin >= 0){
+        var merediem = " PM";
+      }
+      if(betHour > 12){
+        betHour = parseInt(betHour) - 12;
+      }
+      var betTime = dateNtime.substring(11, 19);
+      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betHour + betMinSec + merediem + "</span>" + "<br>" + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
       $(".betsHistory").prepend(newBetLine);
     };
     
