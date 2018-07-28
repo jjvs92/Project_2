@@ -10,7 +10,8 @@ exports.signin = function(req, res) {
 
 exports.mybets = function(req, res){
   res.render("bets", {
-    userid: req.user.id
+    userid: req.user.id,
+    userName: req.user.username
   });
 };
 

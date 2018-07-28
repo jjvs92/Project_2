@@ -337,7 +337,7 @@ $(document).ready(function() {
       else{
         console.log(bet);
         if(parseInt(bet) < parseInt(signedInWallet)){
-          hideModel();
+          hideModal();
         var newBet = {
           user_id: {{userid}},
           user_name: signedInUserName,
@@ -409,7 +409,7 @@ var showBets = function(){
         betHour = parseInt(betHour) - 12;
       }
       var betTime = dateNtime.substring(11, 19);
-      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + betHour + betMinSec + merediem + "</span>" + "<br>" + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
+      var newBetLine = "<li class='betLog'><span class='logTime'>" + betDate + " " + bet + "</span>" + "<br>" + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
       $(".betsHistory").prepend(newBetLine);
     };
     
@@ -487,24 +487,26 @@ var payWinner = function(){
   })
 }    
 
-var hideModel = function(){
+var hideModal = function(){
   $(".modal1").hide();
+  $(".modal1").css("visibility", "hidden");
   $(".page-mask").removeClass("active");
 }
 
 var showModal = function(team){
   $(".modal1").show();
+  $(".modal1").css("visibility", "visible");
   $(".page-mask").addClass("active");
   $(".placeBetTeam").text(team)
   //Click cancel to close modal
   $("body").on("click", ".cancelModal", function(){
-    hideModel();
+    hideModal();
     location.reload();
   });
   
 }
 
-hideModel();
+hideModal();
 payWinner();
 showLeader();
 showBets();
