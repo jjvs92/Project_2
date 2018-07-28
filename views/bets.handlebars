@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-{{> headerDashboard}}
-
-<div class="betsDiv">
-</div>
-<script>
-    $.get("/api/user/bets/" + {{userid}}).then(function(userBets) {
-        console.log(userBets);
-    })
-</script>
-{{> footerDashboard}}
-=======
 {{> headerMyBets}}
 <div class="myBetsFlex">
     <h2 class="betsLive myBetsLive">Bets</h2>
@@ -42,4 +30,3 @@
     }
 })
 </script>
->>>>>>> master
