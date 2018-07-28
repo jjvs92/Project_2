@@ -5,12 +5,11 @@ var path      = require("path");
 var Sequelize = require("sequelize");
 
 var config    = require(path.join(__dirname, '..', 'config', 'config.json'))[env];
-var env       = config.env.JAWSDB_URL ? "production" : "development";
-if(config.use_env_variable){
+//if(config.use_env_variable){
   var sequelize = new Sequelize(process.env[config.use_env_variable])
-} else {
-  var sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
+// } else {
+//   var sequelize = new Sequelize(config.database, config.username, config.password, config);
+// }
 var db        = {};
 
 // if(process.env.JAWSDB_URL){
