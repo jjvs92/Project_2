@@ -234,18 +234,15 @@ module.exports = function(app, passport) {
   });
 
   //-----------------
-  app.put("/api/games/:id", function(req, res) {
+  app.put("/api/games", function(req, res) {
     console.log(req.body);
-    var realID = req.params.id;
-    console.log("Real ID: ");
-    console.log(realID);
-    db.Game.update(
+    db.Bet.update(
       {
         winner: req.body.game_result
       },
       {
         where: {
-          user_id: realID
+          game_id: req.body.game_id
         }
       }
     ).then(function(response) {
