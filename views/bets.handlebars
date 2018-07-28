@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {{> headerDashboard}}
 
 <div class="betsDiv">
@@ -8,3 +9,37 @@
     })
 </script>
 {{> footerDashboard}}
+=======
+{{> headerMyBets}}
+<div class="myBetsFlex">
+    <h2 class="betsLive myBetsLive">Bets</h2>
+    <div class="myBets betsHistory"></div>
+</div>
+{{> footerDashboard}}
+<script>
+    $.get("/api/user/bets/" + {{userid}}, function(data){
+    for(var i=0; i< data.length; i++){
+      var user = data[i].user_name;
+      var bet = data[i].bet_amount;
+      var team = data[i].user_pick;
+      var dateNtime = data[i].createdAt;
+      console.log(typeof dateNtime);
+      var betDate = dateNtime.substring(0, 10);
+      var betHour = dateNtime.substring(11, 13);
+      var betMin = dateNtime.substring(15, 16);
+      var betMinSec = dateNtime.substring(13, 19);
+      var merediem = " AM";
+      betHour = parseInt(betHour) - 5;
+      if(betHour > 12 && betMin >= 0){
+        var merediem = " PM";
+      }
+      if(betHour > 12){
+        betHour = parseInt(betHour) - 12;
+      }
+      var betTime = dateNtime.substring(11, 19);
+      var newBetLine = "<li class='betLog myBetLog'><span class='logTime'>" + betDate + " " + betTime + "</span>" + "<br>" + user + " bet " + bet + " on " + team + "." + "<hr class='betHr'>" + "</li>";
+      $(".myBets").prepend(newBetLine);
+    }
+})
+</script>
+>>>>>>> master

@@ -8,6 +8,13 @@ exports.signin = function(req, res) {
   res.render("signin");
 };
 
+exports.mybets = function(req, res){
+  res.render("bets", {
+    userid: req.user.id,
+    userName: req.user.username
+  });
+};
+
 exports.dashboard = function(req, res) {
   res.render("dashboard", {
     userid: req.user.id,
