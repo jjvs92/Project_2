@@ -3,7 +3,7 @@
 var fs        = require("fs");
 var path      = require("path");
 var Sequelize = require("sequelize");
-
+var env = "production"
 var config    = require(path.join(__dirname, '..', 'config', 'config.json'))[env];
 //if(config.use_env_variable){
   var sequelize = new Sequelize(process.env[config.use_env_variable])
