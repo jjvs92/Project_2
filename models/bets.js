@@ -28,7 +28,7 @@ module.exports = function(sequelize, Sequelize) {
       type: Sequelize.STRING,
       allowNull: false,
       defaultValue: "none"
-    },
+    }
   });
   return Bet;
 };

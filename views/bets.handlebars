@@ -1,0 +1,10 @@
+{{> headerDashboard}}
+
+<div class="betsDiv">
+</div>
+<script>
+    $.get("/api/bets").then(function(userBets) {
+        console.log(userBets);
+    })
+</script>
+{{> footerDashboard}}
