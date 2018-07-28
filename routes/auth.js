@@ -28,6 +28,20 @@ module.exports = function(app, passport) {
     })
   );
 
+  // This route will pull all of a user's bets and post in the "my best" page
+
+   app.get("/api/user/bets/:id", function( req, res){
+      db.Bet.findAll({
+        where: {
+          user_id: req.params.id
+        }
+      }).then(function(dbBets){
+        res.json(dbBets);
+      })
+    })
+
+  // ------------------------------------------------
+
   // This route will get all users so we can compare who has the most money and show on leaderboard
 
   app.get("/api/users/ranking", function(req, res){
@@ -40,6 +54,7 @@ module.exports = function(app, passport) {
     })
   });
 // -----------------------------------------------------
+
 // This route will post the user's bet to Bets table
   app.post("/api/bets", function(req, res) {
     db.Bet.create({
@@ -82,60 +97,7 @@ module.exports = function(app, passport) {
   });
 
   //---------
-  app.get("/api/bets", (req, res) => {
-      db.users.findAll({
-          include: [
-              {
-                  model: db.users,
-                  include: [
-                      {
-                          model: db.bets
-                      }
-                  ]
-              }
-          ]
-      }).then(users => {
-          var resObj = users.map(user => {
-              return Object.assign(
-                  {},
-                  {
-                      user_id: user.id,
-                      user_wallet: user.wallet,
-                      user_status: user.status,
-                      bets: user.bets.map(bet => {
-
-                        return Object.assign(
-                            {},
-                            {
-                                bet_id: bet.id,
-                                bet_game: bet.game_id,
-                                bet_pick: bet.user_pick,
-                                bet_amount: bet.bet_amount,
-                                games: bet.games.map(game => {
-
-                                    return Object.assign(
-                                        {},
-                                        {
-                                            game_id: game.id,
-                                            game_status: game.game_status,
-                                            game_result: game.game_result,
-                                            game_date: game.game_date
-                                        }
-                                    )
-                                })
-                            }
-                        )
-                      })
-                  }
-              )
-          });
-          console.log("WOWOWOWOWOWOWOWOW");
-          res.json(resObj);
-      });
-  });
-
-  //------------------------------------
-
+ 
   // Route that will be used to  check if user has enough funds when attempting to place bet
 
   app.get("/api/placing/bet/:id", function(req, res) {
@@ -218,12 +180,12 @@ module.exports = function(app, passport) {
 
   // Route is switching boolean of bet paid to true
 
-  app.put("api/bets/:id", function(req, res){
+  app.put("/api/bets/table/:id", function(req, res){
     console.log("--------------");
     console.log(req.body);
     db.Bet.update(
       {
-        bet_paid: req.body.paid
+        bet_paid: true
       },
       {
         where: {
@@ -234,18 +196,15 @@ module.exports = function(app, passport) {
   });
 
   //-----------------
-  app.put("/api/games/:id", function(req, res) {
+  app.put("/api/games", function(req, res) {
     console.log(req.body);
-    var realID = req.params.id;
-    console.log("Real ID: ");
-    console.log(realID);
-    db.Game.update(
+    db.Bet.update(
       {
         winner: req.body.game_result
       },
       {
         where: {
-          user_id: realID
+          game_id: req.body.game_id
         }
       }
     ).then(function(response) {

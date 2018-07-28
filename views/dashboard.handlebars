@@ -5,12 +5,12 @@
     <div class="col-6 games" id="scrollBar"></div>
     <div class="col-6 leaderBoard">
       {{!-- Leader Board Table --}}
-      <h2 class="leader">Leader Board</h2>
+      <h2 class="leader">Leaderboard</h2>
       <table class="leaderFlex">
         <tr>
           <th class="leaderNum">#</th>
           <th class="leaderName">User</th>
-          <th class="leaderWinnings">Winnings</th>
+          <th class="leaderWinnings">Wallet</th>
         </tr>
       </table>
       {{!-- Bets Log --}}
@@ -21,6 +21,7 @@
 
     </div>
   </div>
+  {{> footerDashboard}}
 </div>
   <!-- Modal -->
   <div class="modal1">
@@ -33,7 +34,7 @@
       <p class="modalContent">
         How much would you like to bet on the <span class="placeBetTeam"></span>?
       </p>
-      <input class="betInput" type="number" min="1" value="1" name="bet" required>
+      <input class="betInput" type="number" min="1" value="" name="bet" required>
     </div>
     <div class="modalFlexRow">
       <button class="btn btn-warning cancelModal">Cancel</button>
@@ -47,7 +48,7 @@
 
 <script>
 
-  var key = "fpqcanwygm37gnuaan27k6ud"
+  var key = "t3ed9fy74zen5fynprhhkmw2"
   var today = moment(new Date(), "YYYY/MM/DD").format("YYYY/MM/DD");
   var hour = moment().calendar();
   var teamBet = "";
@@ -73,7 +74,7 @@
             var homeScore = thisGame.game.home.runs;
             var awayScore = thisGame.game.away.runs;
             var gameStatus = thisGame.game.status;
-            var thisGameId = thisGame.game
+            var thisGameId = thisGame.game.id
             var winner;
 
             var findWinner = function() {
@@ -89,10 +90,14 @@
               var updatedWinner = winner;
       
               var newResult = {
-                game_result: winner
+                game_result: updatedWinner,
+                game_id: thisGameId
               };
 
-              $.ajax('/api/games/' + id, {
+              console.log("NEW RESULT:");
+              console.log(newResult);
+
+              $.ajax('/api/games', {
                 type: "PUT",
                 data: newResult 
               }).then(
@@ -138,10 +143,6 @@
             
   //-------------------------------------------------
 
-var postGames = function(gameData) {
-    $.post("/api/games", gameData)
-    .then(getGames);
-  };
 
   var getGames = function() {
     $.ajax({
@@ -166,7 +167,25 @@ var showAction = function() {
   var homeTeams = [];
   var awayTeams = [];
   var createDiv = $("<div class='card text-center'></div>");
-  var createImg = $("<img>")
+  var createImg = $("<img>");
+  var todaysGames = [];
+
+  var checkGames = function(games) {
+    $.get("/api/games", function() {
+
+    })
+  }
+
+  var gamesAlreadyPosted = [];
+
+  $.get("/api/games", function(data){
+
+    for(var w=0; w < data.length; w++){
+      var test= data[w].game_id;
+        gamesAlreadyPosted.push(test)
+        //console.log(test);
+    }
+  })        
 
   $(".loginPrompt").empty();
   $.ajax({
@@ -174,6 +193,12 @@ var showAction = function() {
     type: "GET",
     success: function(data) {
       console.log(data.date);
+
+   
+          console.log("--------------------------")
+          console.log(gamesAlreadyPosted);
+          console.log("--------------------------")
+
 
       //console.log(data.games.length);
       // console.log(data.games.length);
@@ -185,21 +210,30 @@ var showAction = function() {
         var homeTeam = data.games[i].home.name;
         var status = data.games[i].status;
         var gameStatus = status.toUpperCase();
-        var gameDate = data.date
-        var gameID = data.games[i].id
+        var gameDate = data.date;
+        var gameID = data.games[i].id;
+        var gameTime = data.games[i].scheduled;
+        var realTime = moment(gameTime).format("hh:mm");
+
+        console.log("GAME TIME:");
+        console.log(realTime);
 
         var newGame = {
-
           home_team: homeCity + " " + homeTeam,
           away_team: awayCity + " " + awayTeam,
           game_status: gameStatus,
           game_id: gameID,
           game_date: gameDate
         };
+          var stringGameID= JSON.stringify(gameID);
+          console.log(gamesAlreadyPosted.indexOf(stringGameID));
 
+          if(gamesAlreadyPosted.indexOf(gameID) <=0){
+           console.log("THIS TECHNICALLY WORKS");
         $.post('/api/games', newGame).then(function() {
-          console.log("New game added");
-        });
+            console.log("New game added");
+          });
+        };
 
 
         homeTeams.push(homeTeam);
@@ -231,7 +265,10 @@ var showAction = function() {
             <div class='row'>          
               <div class='card-footer status'>GAME STATUS:
                 <span class='statusColor'>
-                ${gameStatus}
+                  ${gameStatus}
+                </span> | GAME TIME:
+                <span class='timeColor'>
+                  ${realTime}
                 </span>
               </div>
             </div>
@@ -240,7 +277,7 @@ var showAction = function() {
         );
            //<img src="./images/Yankees.png" alt="Yankees">
 
-        console.log(gameStatus)
+        console.log(gameStatus);
         $(".games").append(createDiv);
         if(gameStatus === 'CLOSED')
         {
@@ -250,26 +287,31 @@ var showAction = function() {
           $(".bet-button").removeClass(".btn-success");
           $(".status").css("color", "red");
         }
-        else if(gameStatus === 'INPROGRESS')
+        else if(gameStatus === "INPROGRESS")
         {
           $(".bet-button").css("background-color", "darkgray");
           $(".bet-button").removeClass(".bet-button");
           $(".bet-button").removeClass(".btn-success");
           $(".statusColor").css("color", "orange");
+          $(".timeColor").css("color", "orange");
+          console.log("orange");
         }
-        else if(gameStatus === 'POSTPONED')
+        else if(gameStatus === "POSTPONED")
         {
           $(".statusColor").css("color", "grey");
+          $(".timeColor").css("color", "grey");
+          console.log("grey");
         }
-        else if(gameStatus === 'SCHEDULED')
+        else if(gameStatus === "SCHEDULED")
         {
           $(".statusColor").css("color", "green");
+          $(".timeColor").css("color", "green");
+          console.log("green");
         }
 
       }    
     }
   });
-  postGames();
 };
 
 $(document).ready(function() {  
@@ -314,9 +356,18 @@ $(document).ready(function() {
 
         signedInWallet = signedInWallet - parseInt(bet);
 
-        console.log(signedInWallet);
-        var newWallet = {
-            new_wallet: signedInWallet
+      console.log(signedInWallet);
+      var newWallet = {
+          new_wallet: signedInWallet
+      }
+      location.reload();
+
+      $.ajax("/api/user/wallet/" + signedInUser, {
+        type: "PUT",
+        data: newWallet
+      }).then(
+        function(){
+          console.log("Wallet Updated " + signedInWallet);
         }
 
         $.ajax("/api/user/wallet/" + signedInUser, {
@@ -332,6 +383,7 @@ $(document).ready(function() {
         
       }
     }
+    $(".betInput").val("");   
     })
 });
 
@@ -385,6 +437,11 @@ var showLeader = function(){
 }
 
 var payWinner = function(){
+
+  console.log("--------");
+  console.log("ITS RUNNING");
+  console.log("--------");
+
   $.get("/api/games/winner", function(data){
     console.log(data);
 
@@ -445,7 +502,9 @@ var showModal = function(team){
   //Click cancel to close modal
   $("body").on("click", ".cancelModal", function(){
     hideModel();
+    location.reload();
   });
+  
 }
 
 hideModel();
@@ -455,9 +514,10 @@ showBets();
  });
 
 
+
 findResults();
 showAction();
 
-
  
+
 </script>
