@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
   );
 
   app.get("/dashboard", isLoggedIn, authController.dashboard);
-  app.get("/my/bets", isLoggedIn, authController.mybets);
+  app.get("/bets", isLoggedIn, authController.mybets);
 
   app.get("/logout", authController.logout);
 
